@@ -1,0 +1,89 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/nano_background"
+    android:gravity="center_horizontal"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary" />
+
+    <TextView
+        android:text="@string/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/nano_navy"
+        android:textSize="@dimen/titles"
+        android:padding="20dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp" >
+
+        <Button
+            android:onClick="btn_spotify"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_spotify"
+            android:textSize="@dimen/buttons"
+            android:background="@drawable/button_orange"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:onClick="btn_scores"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_scores"
+            android:textSize="@dimen/buttons"
+            android:background="@drawable/button_orange"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:onClick="btn_library"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_library"
+            android:textSize="@dimen/buttons"
+            android:background="@drawable/button_orange"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:onClick="btn_bigger"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_bigger"
+            android:textSize="@dimen/buttons"
+            android:background="@drawable/button_orange"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:onClick="btn_bacon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_bacon"
+            android:textSize="@dimen/buttons"
+            android:background="@drawable/button_orange"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:onClick="btn_capstone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_capstone"
+            android:textSize="@dimen/buttons"
+            android:background="@drawable/button_red"
+            android:layout_margin="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary">#ff222222</color>
+    <color name="primary_dark">#000</color>
+    <color name="accent">#9E9E9E</color>
+    <color name="primary_text">#FFF</color>
+    <color name="secondary_text">#FFF</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+
+
+    <color name="nano_background">#FFDFEAF1</color>
+    <color name="nano_navy">#4B687C</color>
+    <color name="nano_orange">#F08C35</color>
+    <color name="nano_orange_pressed">#ffffb86b</color>
+    <color name="nano_red">#D73357</color>
+    <color name="nano_red_pressed">#ffd7576c</color>
+    
+</resources>
