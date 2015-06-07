@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,34 +32,39 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.settings) {
-            Toast.makeText(this, getString(R.string.toast_no_settings), Toast.LENGTH_SHORT).show();
+            showToast(getString(R.string.settings));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void btn_spotify(View v) {
-        Toast.makeText(this, getString(R.string.toast_spotify), Toast.LENGTH_SHORT).show();
+    public void btn_click(View v) {
+        Button button = (Button) v;
+        showToast(button.getText().toString());
+        switch (v.getId()) {
+            case R.id.btn_spotify:
+                // launch spotify activity
+                break;
+            case R.id.btn_scores:
+                // launch scores activity
+                break;
+            case R.id.btn_library:
+                // launch library activity
+                break;
+            case R.id.btn_bigger:
+                // launch bigger activity
+                break;
+            case R.id.btn_bacon:
+                // launch bacon activity
+                break;
+            case R.id.btn_capstone:
+                // launch capstone activity
+                break;
+        }
     }
 
-    public void btn_scores(View v) {
-        Toast.makeText(this, getString(R.string.toast_scores), Toast.LENGTH_SHORT).show();
-    }
-
-    public void btn_library(View v) {
-        Toast.makeText(this, getString(R.string.toast_library), Toast.LENGTH_SHORT).show();
-    }
-
-    public void btn_bigger(View v) {
-        Toast.makeText(this, getString(R.string.toast_bigger), Toast.LENGTH_SHORT).show();
-    }
-
-    public void btn_bacon(View v) {
-        Toast.makeText(this, getString(R.string.toast_bacon), Toast.LENGTH_SHORT).show();
-    }
-
-    public void btn_capstone(View v) {
-        Toast.makeText(this, getString(R.string.toast_capstone), Toast.LENGTH_SHORT).show();
+    public void showToast(String message) {
+        Toast.makeText(this, String.format(getString(R.string.toast), message), Toast.LENGTH_SHORT).show();
     }
 
 }

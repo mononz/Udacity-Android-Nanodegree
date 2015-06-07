@@ -11,12 +11,6 @@
     <string name="btn_bacon">Bacon Reader</string>
     <string name="btn_capstone">Capstone: My Own App</string>
 
-    <string name="toast_no_settings">No settings yet</string>
-    <string name="toast_spotify">This button will launch my \'Spotify Streamer\' app</string>
-    <string name="toast_scores">This button will launch my \'Football Scores\' app</string>
-    <string name="toast_library">This button will launch my \'Library\' app</string>
-    <string name="toast_bigger">This button will launch my \'Build It Bigger\' app</string>
-    <string name="toast_bacon">This button will launch my \'XYZ Reader\' app</string>
-    <string name="toast_capstone">This button will launch my \'Capstone\' app</string>
+    <string name="toast">This button will launch my \'%s\' app</string>
 
 </resources>

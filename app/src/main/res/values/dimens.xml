@@ -6,4 +6,6 @@
 
     <dimen name="titles">24sp</dimen>
     <dimen name="buttons">16sp</dimen>
+    <dimen name="button_margin">5dp</dimen>
+    <dimen name="button_padding">10dp</dimen>
 </resources>
