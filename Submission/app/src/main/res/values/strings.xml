@@ -4,7 +4,7 @@
     <string name="settings">Settings</string>
 
     <string name="main_title">My Nanodegree Apps!</string>
-    <string name="btn_spotify">Spotify Streamer</string>
+    <string name="btn_movies">Popular Movies</string>
     <string name="btn_scores">Scores App</string>
     <string name="btn_library">Library App</string>
     <string name="btn_bigger">Build it Bigger</string>
