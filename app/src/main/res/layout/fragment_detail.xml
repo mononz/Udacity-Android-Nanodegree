@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Popularity"
+                    android:text="@string/movies_popularity"
                     style="@style/GeneralTextBold" />
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Rating"
+                    android:text="@string/movies_rating"
                     style="@style/GeneralTextBold" />
 
                 <TextView
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Released"
+                    android:text="@string/movies_released"
                     android:gravity="end"
                     style="@style/GeneralTextBold" />
 
@@ -87,7 +87,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Plot Summary:"
+            android:text="@string/movies_plot"
             style="@style/GeneralTextBold"
             android:focusable="false"
             android:gravity="center_horizontal" />

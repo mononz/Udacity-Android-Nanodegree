@@ -31,7 +31,7 @@
 
         <Button
             android:id="@+id/btn_movies"
-            android:text="@string/btn_movies"
+            android:text="@string/movies_app"
             android:onClick="btn_click"
             style="@style/ButtonStyle_Orange" />
 

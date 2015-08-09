@@ -76,7 +76,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onResume() {
         super.onResume();
-        ((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.btn_movies));
+        ((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.movies_app));
     }
 
     @Override
