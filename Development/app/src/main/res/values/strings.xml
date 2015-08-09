@@ -1,4 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- !! INSERT YOUR API KEY BELOW !! -->
+    <!-- <string name="tmdb_api_key">INSERT TMDB API KEY HERE</string> -->
+
     <string name="app_name">Movies App</string>
     <string name="action_settings">Settings</string>
 

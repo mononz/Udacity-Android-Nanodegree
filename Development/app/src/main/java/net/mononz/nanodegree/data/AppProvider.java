@@ -65,7 +65,7 @@ public class AppProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
-                return retCursor;
+                break;
             // Individual movie based on Id selected
             case MOVIE_WITH_ID:
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -76,10 +76,12 @@ public class AppProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
-                return retCursor;
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Override
@@ -102,6 +104,7 @@ public class AppProvider extends ContentProvider {
             }
         }
         getContext().getContentResolver().notifyChange(uri, null);
+        Log.d("Insert", "notify changed");
         return returnUri;
     }
 
@@ -125,6 +128,10 @@ public class AppProvider extends ContentProvider {
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (numDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+            Log.d("Delete", "notify changed (" + numDeleted + ")");
         }
         return numDeleted;
     }
@@ -161,6 +168,7 @@ public class AppProvider extends ContentProvider {
                 }
                 if (numInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
+                    Log.d("Bulk Insert", "notify changed (" + numInserted + ")");
                 }
                 return numInserted;
             default:
@@ -193,6 +201,7 @@ public class AppProvider extends ContentProvider {
         }
         if (numUpdated > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
+            Log.d("Update", "notify changed (" + numUpdated + ")");
         }
         return numUpdated;
     }

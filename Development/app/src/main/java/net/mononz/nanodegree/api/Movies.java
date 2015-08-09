@@ -1,11 +1,11 @@
-package net.mononz.nanodegree.json;
+package net.mononz.nanodegree.api;
 
 import java.util.ArrayList;
 
 public class Movies {
 
     public String page;
-    public ArrayList<Result> results;
+    public ArrayList<MoviesResult> results;
     public String total_pages;
     public String total_results;
 

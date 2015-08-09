@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import net.mononz.nanodegree.api.Api;
 import net.mononz.nanodegree.data.MoviesContract;
 
 public class MovieAdapter extends CursorAdapter {
@@ -62,7 +63,7 @@ public class MovieAdapter extends CursorAdapter {
         Log.i(LOG_TAG, "Image reference extracted: " + cursor.getString(imageIndex));
 
         Glide.with(context)
-                .load(API.getImage(cursor.getString(imageIndex)))
+                .load(Api.getImage(cursor.getString(imageIndex)))
                 .centerCrop()
                 //.placeholder(R.drawable.cupcake)
                 .crossFade()

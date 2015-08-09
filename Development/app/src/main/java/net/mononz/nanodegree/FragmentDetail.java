@@ -19,9 +19,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import net.mononz.nanodegree.api.Api;
 import net.mononz.nanodegree.data.MoviesContract;
 
-public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class FragmentDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private Toolbar toolbar;
     private Cursor mDetailCursor;
@@ -33,8 +34,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private Uri mUri;
     private static final int CURSOR_LOADER_ID = 0;
 
-    public static DetailFragment newInstance(int position, Uri uri) {
-        DetailFragment fragment = new DetailFragment();
+    public static FragmentDetail newInstance(int position, Uri uri) {
+        FragmentDetail fragment = new FragmentDetail();
         Bundle args = new Bundle();
         fragment.mPosition = position;
         fragment.mUri = uri;
@@ -43,7 +44,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return fragment;
     }
 
-    public DetailFragment() {
+    public FragmentDetail() {
         // Required empty public constructor
     }
 
@@ -60,7 +61,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mTextView = (TextView) rootView.findViewById(R.id.version_description);
         mUriText = (TextView) rootView.findViewById(R.id.uri);
         Bundle args = this.getArguments();
-        getLoaderManager().initLoader(CURSOR_LOADER_ID, args, DetailFragment.this);
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, args, FragmentDetail.this);
 
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -118,7 +119,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         int imageIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_BACKDROP);
         Glide.with(this)
-                .load(API.getImage(mDetailCursor.getString(imageIndex)))
+                .load(Api.getImage(mDetailCursor.getString(imageIndex)))
                 .into(mImageView);
 
         int releaseIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE);

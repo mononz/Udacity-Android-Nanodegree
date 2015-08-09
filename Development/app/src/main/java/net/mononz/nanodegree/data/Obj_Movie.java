@@ -1,4 +1,4 @@
-package net.mononz.nanodegree;
+package net.mononz.nanodegree.data;
 
 public class Obj_Movie {
 

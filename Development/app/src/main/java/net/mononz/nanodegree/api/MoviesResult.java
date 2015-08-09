@@ -1,6 +1,6 @@
-package net.mononz.nanodegree.json;
+package net.mononz.nanodegree.api;
 
-public class Result {
+public class MoviesResult {
 
     public boolean adult;
     public String backdrop_path;
