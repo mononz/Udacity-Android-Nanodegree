@@ -23,77 +23,58 @@
             android:adjustViewBounds="true"
             tools:src="@drawable/ant_man" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_above="@+id/rating_layout">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Popularity:"
+                    android:gravity="end"
+                    android:text="Popularity"
                     style="@style/GeneralTextBold" />
 
                 <TextView
                     android:id="@+id/popularity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="end"
                     style="@style/GeneralText"
                     tools:text="44.8" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/rating_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_above="@+id/released_layout">
-
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rating:"
+                    android:gravity="end"
+                    android:text="Rating"
                     style="@style/GeneralTextBold" />
 
                 <TextView
                     android:id="@+id/rating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="end"
                     style="@style/GeneralText"
                     tools:text="7.8 (1150)" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/released_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true" >
-
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Released:"
+                    android:text="Released"
+                    android:gravity="end"
                     style="@style/GeneralTextBold" />
 
                 <TextView
                     android:id="@+id/released"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="end"
                     style="@style/GeneralText"
                     tools:text="2015-03-06" />
 
-            </LinearLayout>
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -101,14 +82,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="1"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+        android:layout_weight="1" >
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Plot Summary:"
-            style="@style/GeneralTextBold" />
+            style="@style/GeneralTextBold"
+            android:focusable="false"
+            android:gravity="center_horizontal" />
 
         <ScrollView
             android:layout_width="fill_parent"

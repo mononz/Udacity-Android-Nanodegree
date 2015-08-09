@@ -17,7 +17,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/button_margin</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/buttons</item>
         <item name="android:paddingLeft">@dimen/button_padding</item>
         <item name="android:paddingRight">@dimen/button_padding</item>
@@ -32,12 +32,14 @@
     </style>
 
     <style name="GeneralText">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/general</item>
-        <item name="android:padding">@dimen/button_margin</item>
+        <item name="android:padding">@dimen/text_margin</item>
     </style>
 
     <style name="GeneralTextBold" parent="GeneralText">
+        <item name="android:textColor">@color/off_white</item>
+        <item name="android:layout_marginTop">@dimen/button_margin</item>
         <item name="android:textStyle">bold</item>
     </style>
 
