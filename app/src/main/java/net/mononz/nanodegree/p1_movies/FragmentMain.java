@@ -11,6 +11,9 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,6 +28,8 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
     private MovieAdapter mFlavorAdapter;
 
+    private static final String MOVIE_SORT = "sort";
+
     private static final int CURSOR_LOADER_ID = 0;
 
     public FragmentMain() { }
@@ -32,7 +37,9 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         // initialize loader
-        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+        Bundle args = new Bundle();
+        args.putString(MOVIE_SORT, MoviesContract.MovieEntry.SORT_POPULARITY);
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, args, this);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -60,14 +67,48 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
                         .addToBackStack(null).commit();
             }
         });
+
+        setHasOptionsMenu(true);
         return rootView;
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        String sort_option;
+        switch (item.getItemId()) {
+            case R.id.sort_name:
+                sort_option = MoviesContract.MovieEntry.SORT_TITLE;
+                break;
+            case R.id.sort_popularity:
+                sort_option = MoviesContract.MovieEntry.SORT_POPULARITY;
+                break;
+            case R.id.sort_rating:
+                sort_option = MoviesContract.MovieEntry.SORT_RATING;
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        Bundle args = new Bundle();
+        args.putString(MOVIE_SORT, sort_option);
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID, args, this);
+        return true;
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String sort = null;
+        if (args != null) {
+            sort = args.getString(MOVIE_SORT);
+        }
         return new CursorLoader(getActivity(),
                 MoviesContract.MovieEntry.CONTENT_URI,
-                null, null, null, null);
+                null, null, null, sort);
     }
 
     @Override

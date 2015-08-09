@@ -1,12 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".ActivityMovies">
 
     <item
-        android:id="@+id/settings"
-        android:title="@string/action_settings"
+        android:id="@+id/sort_name"
+        android:title="Sort By Name"
         android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/sort_popularity"
+        android:title="Sort By Popularity"
+        android:orderInCategory="200"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/sort_rating"
+        android:title="Sort By Rating"
+        android:orderInCategory="300"
         app:showAsAction="never" />
 
 </menu>

@@ -39,5 +39,9 @@ public class MoviesContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
+        public static final String SORT_TITLE = MoviesContract.MovieEntry.COLUMN_TITLE + " COLLATE NOCASE ASC";
+        public static final String SORT_POPULARITY = MoviesContract.MovieEntry.COLUMN_POPULARITY + " DESC";
+        public static final String SORT_RATING = MoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE + " DESC";
+
     }
 }
