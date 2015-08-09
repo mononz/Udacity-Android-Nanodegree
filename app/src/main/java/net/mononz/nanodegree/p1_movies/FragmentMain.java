@@ -49,6 +49,8 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setTitle("Popular Movies");
 
         mFlavorAdapter = new MovieAdapter(getActivity(), null, 0, CURSOR_LOADER_ID);
@@ -82,6 +84,9 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     public boolean onOptionsItemSelected(MenuItem item) {
         String sort_option;
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
             case R.id.sort_name:
                 sort_option = MoviesContract.MovieEntry.SORT_TITLE;
                 break;
