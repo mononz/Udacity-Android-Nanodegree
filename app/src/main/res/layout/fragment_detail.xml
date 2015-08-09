@@ -1,53 +1,128 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="net.mononz.nanodegree.FragmentDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin"
+    tools:context="net.mononz.nanodegree.p1_movies.ActivityMovies"
+    android:weightSum="2">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:weightSum="2" >
 
         <ImageView
-            android:id="@+id/flavor_icon"
+            android:id="@+id/poster"
             android:contentDescription="@string/icon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
             android:adjustViewBounds="true"
-            android:minHeight="150dp"/>
+            tools:src="@drawable/ant_man" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/version_description"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="hello"/>
+                android:orientation="horizontal"
+                android:layout_above="@+id/rating_layout">
 
-            <TextView
-                android:id="@+id/uri"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Popularity:"
+                    style="@style/GeneralTextBold" />
+
+                <TextView
+                    android:id="@+id/popularity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GeneralText"
+                    tools:text="44.8" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rating_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="hello"/>
+                android:orientation="horizontal"
+                android:layout_above="@+id/released_layout">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating:"
+                    style="@style/GeneralTextBold" />
+
+                <TextView
+                    android:id="@+id/rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GeneralText"
+                    tools:text="7.8 (1150)" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/released_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Released:"
+                    style="@style/GeneralTextBold" />
+
+                <TextView
+                    android:id="@+id/released"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GeneralText"
+                    tools:text="2015-03-06" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@android:color/transparent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Plot Summary:"
+            style="@style/GeneralTextBold" />
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:id="@+id/plot"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/GeneralText"
+                tools:text="Lorem Ipsum" />
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

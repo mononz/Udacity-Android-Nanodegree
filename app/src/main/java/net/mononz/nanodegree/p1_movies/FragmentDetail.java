@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,15 +23,16 @@ import net.mononz.nanodegree.p1_movies.data.MoviesContract;
 
 public class FragmentDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private Toolbar toolbar;
     private Cursor mDetailCursor;
-    private View mRootView;
     private int mPosition;
-    private ImageView mImageView;
-    private TextView mTextView;
-    private TextView mUriText;
     private Uri mUri;
     private static final int CURSOR_LOADER_ID = 0;
+
+    private ImageView mPoster;
+    private TextView mPopularity;
+    private TextView mRating;
+    private TextView mPlot;
+    private TextView mReleased;
 
     public static FragmentDetail newInstance(int position, Uri uri) {
         FragmentDetail fragment = new FragmentDetail();
@@ -58,16 +57,15 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        mImageView = (ImageView) rootView.findViewById(R.id.flavor_icon);
-        mTextView = (TextView) rootView.findViewById(R.id.version_description);
-        mUriText = (TextView) rootView.findViewById(R.id.uri);
+
+        mPoster = (ImageView) rootView.findViewById(R.id.poster);
+        mPopularity = (TextView) rootView.findViewById(R.id.popularity);
+        mRating = (TextView) rootView.findViewById(R.id.rating);
+        mPlot = (TextView) rootView.findViewById(R.id.plot);
+        mReleased = (TextView) rootView.findViewById(R.id.released);
+
         Bundle args = this.getArguments();
         getLoaderManager().initLoader(CURSOR_LOADER_ID, args, FragmentDetail.this);
-
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         setHasOptionsMenu(true);
         return rootView;
@@ -116,18 +114,26 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         DatabaseUtils.dumpCursor(data);
 
         int nameIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE);
-        toolbar.setTitle(mDetailCursor.getString(nameIndex));
+        ((ActivityMovies) getActivity()).toolbar.setTitle(mDetailCursor.getString(nameIndex));
 
-        int imageIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_BACKDROP);
+        int posterIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER);
         Glide.with(this)
-                .load(Api.getImage(mDetailCursor.getString(imageIndex)))
-                .into(mImageView);
+                .load(Api.getImage(mDetailCursor.getString(posterIndex)))
+                .into(mPoster);
 
-        int releaseIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE);
-        mTextView.setText(mDetailCursor.getString(releaseIndex));
+        int popularityIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POPULARITY);
+        mPopularity.setText(mDetailCursor.getString(popularityIndex));
 
-        int synopsisIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_OVERVIEW);
-        mUriText.setText(mDetailCursor.getString(synopsisIndex));
+        int ratingAverageIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE);
+        int ratingCountIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_VOTE_COUNT);
+        mRating.setText("" + mDetailCursor.getDouble(ratingAverageIndex) + " (" + mDetailCursor.getInt(ratingCountIndex) + ")");
+
+        int plotIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_OVERVIEW);
+        mPlot.setText(mDetailCursor.getString(plotIndex));
+
+        int releasedIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE);
+        mReleased.setText(mDetailCursor.getString(releasedIndex));
+
     }
 
     // reset CursorAdapter on Loader Reset

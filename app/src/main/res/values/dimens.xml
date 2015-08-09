@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="titles">24sp</dimen>
+    <dimen name="general">16sp</dimen>
     <dimen name="buttons">16sp</dimen>
     <dimen name="button_margin">5dp</dimen>
     <dimen name="button_padding">10dp</dimen>

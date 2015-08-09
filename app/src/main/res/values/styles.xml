@@ -31,4 +31,14 @@
         <item name="android:background">@drawable/button_red</item>
     </style>
 
+    <style name="GeneralText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/general</item>
+        <item name="android:padding">@dimen/button_margin</item>
+    </style>
+
+    <style name="GeneralTextBold" parent="GeneralText">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

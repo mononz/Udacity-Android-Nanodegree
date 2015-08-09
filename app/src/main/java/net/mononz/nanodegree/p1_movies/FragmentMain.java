@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,12 +46,6 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setTitle("Popular Movies");
-
         mFlavorAdapter = new MovieAdapter(getActivity(), null, 0, CURSOR_LOADER_ID);
         final GridView mGridView = (GridView) rootView.findViewById(R.id.flavors_grid);
         mGridView.setAdapter(mFlavorAdapter);
@@ -61,7 +53,6 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // increment the position to match Database Ids indexed starting at 1
                 Cursor c = (Cursor) mFlavorAdapter.getItem(position);
                 c.moveToPosition(position);
                 int uriIndex = c.getColumnIndex(MoviesContract.MovieEntry._ID);
@@ -79,6 +70,13 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
         setHasOptionsMenu(true);
         return rootView;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.btn_movies));
     }
 
     @Override
