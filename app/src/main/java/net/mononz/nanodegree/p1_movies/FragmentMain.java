@@ -10,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +23,7 @@ import android.widget.GridView;
 import net.mononz.nanodegree.R;
 import net.mononz.nanodegree.p1_movies.data.MoviesContract;
 
-public class FragmentMain extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class FragmentMain extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = FragmentMain.class.getSimpleName();
 
@@ -54,19 +55,25 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
         toolbar.setTitle("Popular Movies");
 
         mFlavorAdapter = new MovieAdapter(getActivity(), null, 0, CURSOR_LOADER_ID);
-        GridView mGridView = (GridView) rootView.findViewById(R.id.flavors_grid);
+        final GridView mGridView = (GridView) rootView.findViewById(R.id.flavors_grid);
         mGridView.setAdapter(mFlavorAdapter);
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // increment the position to match Database Ids indexed starting at 1
-                int uriId = position + 1;
+                Cursor c = (Cursor) mFlavorAdapter.getItem(position);
+                c.moveToPosition(position);
+                int uriIndex = c.getColumnIndex(MoviesContract.MovieEntry._ID);
+                int uriId = c.getInt(uriIndex);
+                Log.i(LOG_TAG, "id reference extracted: " + uriId);
+
                 Uri uri = ContentUris.withAppendedId(MoviesContract.MovieEntry.CONTENT_URI, uriId);
                 FragmentDetail fragmentDetail = FragmentDetail.newInstance(uriId, uri);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, fragmentDetail)
-                        .addToBackStack(null).commit();
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
