@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import net.mononz.nanodegree.R;
-import net.mononz.nanodegree.p1_movies.api.Api;
 import net.mononz.nanodegree.p1_movies.data.MoviesContract;
+import net.mononz.nanodegree.p1_movies.sync.MovieSyncAdapter;
 
 public class MovieAdapter extends CursorAdapter {
 
@@ -49,7 +49,7 @@ public class MovieAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         int imageIndex = cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER);
         Glide.with(context)
-                .load(Api.getImage(cursor.getString(imageIndex)))
+                .load(MovieSyncAdapter.getImage(cursor.getString(imageIndex)))
                 .centerCrop()
                 .crossFade()
                 .into(viewHolder.imageView);

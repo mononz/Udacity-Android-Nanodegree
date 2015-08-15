@@ -11,7 +11,6 @@ public class AppDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "nanodegree.db";
     private static final int DATABASE_VERSION = 1;
-
     public AppDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -24,6 +23,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
                 MoviesContract.MovieEntry.COLUMN_ADULT	+ " INTEGER NOT NULL DEFAULT 0, " +
                 MoviesContract.MovieEntry.COLUMN_BACKDROP + " TEXT NOT NULL, " +
                 MoviesContract.MovieEntry.COLUMN_GENRE + " TEXT NOT NULL, " +
+                MoviesContract.MovieEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL DEFAULT 0, " +
                 MoviesContract.MovieEntry.COLUMN_ORIGINAL_LANGUAGE + " TEXT NOT NULL, " +
                 MoviesContract.MovieEntry.COLUMN_ORIGINAL_TITLE+ " TEXT NOT NULL, " +
                 MoviesContract.MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
@@ -42,7 +42,7 @@ public class AppDBHelper extends SQLiteOpenHelper {
         Log.w(LOG_TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ". OLD DATA WILL BE DESTROYED");
 
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MoviesContract.MovieEntry.TABLE_MOVIES);
-        sqLiteDatabase.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + MoviesContract.MovieEntry.TABLE_MOVIES + "'");
+        //sqLiteDatabase.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + MoviesContract.MovieEntry.TABLE_MOVIES + "'");
 
         onCreate(sqLiteDatabase);
     }

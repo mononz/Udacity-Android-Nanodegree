@@ -18,8 +18,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import net.mononz.nanodegree.R;
-import net.mononz.nanodegree.p1_movies.api.Api;
 import net.mononz.nanodegree.p1_movies.data.MoviesContract;
+import net.mononz.nanodegree.p1_movies.sync.MovieSyncAdapter;
+import net.mononz.nanodegree.p1_movies.sync.MovieSyncService;
 
 public class FragmentDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -94,11 +95,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
             selectionArgs = new String[]{String.valueOf(mPosition)};
         }
         return new CursorLoader(getActivity(),
-                mUri,
-                null,
-                selection,
-                selectionArgs,
-                null);
+                mUri, null, selection, selectionArgs, null);
     }
 
     @Override
@@ -118,7 +115,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
 
         int posterIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER);
         Glide.with(this)
-                .load(Api.getImage(mDetailCursor.getString(posterIndex)))
+                .load(MovieSyncAdapter.getImage(mDetailCursor.getString(posterIndex)))
                 .into(mPoster);
 
         int popularityIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POPULARITY);

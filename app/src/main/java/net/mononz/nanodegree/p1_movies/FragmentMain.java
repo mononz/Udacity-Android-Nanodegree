@@ -112,13 +112,13 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sort = null;
+        String sort_option = null;
         if (args != null) {
-            sort = args.getString(MOVIE_SORT);
+            sort_option = args.getString(MOVIE_SORT);
         }
         return new CursorLoader(getActivity(),
                 MoviesContract.MovieEntry.CONTENT_URI,
-                null, null, null, sort);
+                null, null, null, sort_option);
     }
 
     @Override

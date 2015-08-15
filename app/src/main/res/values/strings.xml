@@ -4,6 +4,8 @@
     <!-- !! INSERT YOUR API KEY BELOW !! -->
     <!-- <string name="tmdb_api_key">INSERT TMDB API KEY HERE</string> -->
 
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">nanodegree.mononz.net</string>
     <string name="content_authority">net.mononz.nanodegree.app</string>
 
     <string name="app_name">My App Portfolio</string>
