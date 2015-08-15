@@ -1,7 +1,6 @@
 package net.mononz.nanodegree;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 import com.facebook.stetho.Stetho;
 
 import net.mononz.nanodegree.p1_movies.ActivityMovies;
-import net.mononz.nanodegree.p1_movies.data.MoviesContract;
-import net.mononz.nanodegree.p1_movies.sync.MovieSyncAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,20 +24,10 @@ public class MainActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
         }
 
-        MovieSyncAdapter.initializeSyncAdapter(this);
-
         Stetho.initialize(Stetho.newInitializerBuilder(this)
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                 .build());
-
-        Cursor c = getContentResolver().query(MoviesContract.MovieEntry.CONTENT_URI,
-                new String[]{MoviesContract.MovieEntry._ID},
-                null, null, null);
-        if (c.getCount() == 0) {
-            MovieSyncAdapter.syncImmediately(this);
-        }
-
     }
 
     public void btn_click(View v) {

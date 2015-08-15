@@ -2,7 +2,7 @@
 <resources>
 
     <!-- !! INSERT YOUR API KEY BELOW !! -->
-    <!-- <string name="tmdb_api_key">INSERT TMDB API KEY HERE</string> -->
+    <!-- <string name="tmdb_api_key">UNCOMMENT AND INSERT TMDB API KEY HERE</string> -->
 
     <!-- SyncAdapter related -->
     <string name="sync_account_type">nanodegree.mononz.net</string>

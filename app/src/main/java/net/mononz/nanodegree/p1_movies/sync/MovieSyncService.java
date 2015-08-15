@@ -23,4 +23,5 @@ public class MovieSyncService extends Service {
     public IBinder onBind(Intent intent) {
         return sMovieSyncAdapter.getSyncAdapterBinder();
     }
+
 }

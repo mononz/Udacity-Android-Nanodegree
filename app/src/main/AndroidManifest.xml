@@ -5,12 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Permissions required by the sync adapter -->
-    <uses-permission
-        android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -36,10 +33,11 @@
             android:authorities="@string/content_authority"
             android:name=".p1_movies.data.AppProvider"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true" />
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".p1_movies.sync.MovieAuthenticatorService">
+        <service android:name=".p1_movies.sync.MovieAuthenticatorService"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -51,8 +49,7 @@
         <!-- The SyncAdapter service -->
         <service
             android:name=".p1_movies.sync.MovieSyncService"
-            android:exported="true"
-            >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>

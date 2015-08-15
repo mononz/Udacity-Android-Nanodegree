@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import net.mononz.nanodegree.Preferences_Manager;
 import net.mononz.nanodegree.R;
 import net.mononz.nanodegree.p1_movies.api.Movies;
 import net.mononz.nanodegree.p1_movies.api.MoviesResult;
@@ -33,19 +34,12 @@ import java.util.ArrayList;
 
 public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public final String LOG_TAG = MovieSyncAdapter.class.getSimpleName();
-
-    // Interval at which to sync with the weather, in seconds.
-    // 60 seconds (1 minute) * 180 = 3 hours
-    public static final int SYNC_INTERVAL = 60 * 180;
-    //public static final int SYNC_INTERVAL = 5; // testing
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
-
+    private static final String LOG_TAG = MovieSyncAdapter.class.getSimpleName();
 
     private static final String IMAGE_QUALITY = "w342"; // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
 
-    private static final String BASE_URL = "https://api.themoviedb.org/3";
-    //private static final String BASE_URL = "http://192.168.1.238:3000"; // testing url
+    //private static final String BASE_URL = "https://api.themoviedb.org/3";
+    private static final String BASE_URL = "http://192.168.1.238:3000"; // testing url
     private static final String IMAGE_URL = "http://image.tmdb.org/t/p/" + IMAGE_QUALITY;
 
     private static final String PARAM_API = "api_key";
@@ -60,24 +54,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "Starting sync");
         getPopularMovies();
-    }
-
-    /**
-     * Helper method to schedule the sync adapter periodic execution
-     */
-    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
-        Account account = getSyncAccount(context);
-        String authority = context.getString(R.string.content_authority);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // we can enable inexact timers in our periodic sync
-            SyncRequest request = new SyncRequest.Builder().
-                    syncPeriodic(syncInterval, flexTime).
-                    setSyncAdapter(account, authority).
-                    setExtras(new Bundle()).build();
-            ContentResolver.requestSync(request);
-        } else {
-            ContentResolver.addPeriodicSync(account, authority, new Bundle(), syncInterval);
-        }
     }
 
     /**
@@ -107,12 +83,12 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         Account newAccount = new Account(context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
-        if ( null == accountManager.getPassword(newAccount) ) {
+        if (null == accountManager.getPassword(newAccount)) {
 
-        /*
-         * Add the account and account type, no password or user data
-         * If successful, return the Account object, otherwise report an error.
-         */
+            /*
+             * Add the account and account type, no password or user data
+             * If successful, return the Account object, otherwise report an error.
+             */
             if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
                 return null;
             }
@@ -129,20 +105,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private static void onAccountCreated(Account newAccount, Context context) {
-        /*
-         * Since we've created an account
-         */
-        MovieSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
-
-        /*
-         * Without calling setSyncAutomatically, our periodic sync will not be enabled.
-         */
-        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
-
-        /*
-         * Finally, let's do a sync to get things started
-         */
-        syncImmediately(context);
+        Log.d(LOG_TAG, "Account created - " + newAccount.name);
     }
 
     public static void initializeSyncAdapter(Context context) {
@@ -228,7 +191,13 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         getContext().getContentResolver().delete(MoviesContract.MovieEntry.CONTENT_URI, null, null);
         getContext().getContentResolver().bulkInsert(MoviesContract.MovieEntry.CONTENT_URI, movieValuesArr);
         Log.d(LOG_TAG, "Sync completed");
+
+        Preferences_Manager preferences_manager = new Preferences_Manager(getContext());
+        preferences_manager.setLastSync(System.currentTimeMillis());
     }
+
+
+    // HELPER FUNCTIONS
 
     private String downloadTextFromUrl(URL url) {
         Log.d("url", url.toString());
@@ -267,8 +236,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             strMovies = buffer.toString();
 
         } catch (IOException e) {
-            Log.e("PlaceholderFragment", "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attemping
+            Log.e(LOG_TAG, "Error ", e);
+            // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
             return null;
         } finally{
@@ -279,7 +248,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e("PlaceholderFragment", "Error closing stream", e);
+                    Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
