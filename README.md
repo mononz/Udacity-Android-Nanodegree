@@ -1,4 +1,4 @@
-# Android-Developer-Nanodegree
+# Android Nanodegree
 
 Udacity Android Developer Course  
 

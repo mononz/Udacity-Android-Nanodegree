@@ -16,7 +16,7 @@ public class ActivityMovies extends AppCompatActivity {
     public Toolbar toolbar;
 
     private static final long THRESHOLD_HOURS = 6;
-    private static final long THRESHOLD_MILLIS = THRESHOLD_HOURS * 60 * 1000;
+    private static final long THRESHOLD_MILLIS = THRESHOLD_HOURS * 60 * 60 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
