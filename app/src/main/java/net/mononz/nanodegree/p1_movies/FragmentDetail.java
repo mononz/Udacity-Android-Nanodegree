@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import net.mononz.nanodegree.R;
 import net.mononz.nanodegree.p1_movies.data.MoviesContract;
 import net.mononz.nanodegree.p1_movies.sync.MovieSyncAdapter;
-import net.mononz.nanodegree.p1_movies.sync.MovieSyncService;
 
 public class FragmentDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -40,7 +39,6 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         Bundle args = new Bundle();
         fragment.mPosition = position;
         fragment.mUri = uri;
-        args.putInt(MoviesContract.MovieEntry._ID, position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,6 +57,17 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
+        if (savedInstanceState != null) {
+            // Restore last state
+            mPosition = savedInstanceState.getInt("mPosition");
+            mUri = Uri.parse(savedInstanceState.getString("mUri"));
+            getLoaderManager().initLoader(CURSOR_LOADER_ID, new Bundle(), FragmentDetail.this);
+        } else {
+            Bundle args = this.getArguments();
+            getLoaderManager().initLoader(CURSOR_LOADER_ID, args, FragmentDetail.this);
+        }
+
+
         mPoster = (ImageView) rootView.findViewById(R.id.poster);
         mPopularity = (TextView) rootView.findViewById(R.id.popularity);
         mRating = (TextView) rootView.findViewById(R.id.rating);
@@ -70,6 +79,13 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
 
         setHasOptionsMenu(true);
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mPosition", mPosition);
+        outState.putString("mUri", mUri.toString());
     }
 
     @Override

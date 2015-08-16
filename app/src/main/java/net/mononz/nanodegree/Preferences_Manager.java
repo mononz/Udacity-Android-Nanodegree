@@ -27,6 +27,33 @@ public class Preferences_Manager {
     }
 
 
+    // ---- Sorting ---- //
+
+    private static final String SORT_OPTION = "sort_option";
+    public static final int SORT_NAME = 0;
+    public static final int SORT_POPULARITY = 1;
+    public static final int SORT_RATING = 2;
+
+    public void setSortOption(int value) {
+        save_to_preferences(main_pref, SORT_OPTION, value);
+    }
+    public int getSortOption() {
+        return main_pref.getInt(SORT_OPTION, SORT_POPULARITY);
+    }
+    public String getSortOptionString() {
+        switch (getSortOption()) {
+            case SORT_NAME:
+                return "Sorted by Name";
+            case SORT_POPULARITY:
+                return "Sorted by Popularity";
+            case SORT_RATING:
+                return "Sorted by Rating";
+            default:
+                return null;
+        }
+    }
+
+
     // ---- Save Preferences ---- //
 
     private void save_to_preferences(SharedPreferences preference, String key, String value) {

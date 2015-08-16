@@ -22,10 +22,14 @@
 
     <string name="toast">This button will launch my \'%s\' app</string>
 
-    <string name="movies_app">Popular Movies</string>
+    <string name="movies_app">20 Most Popular Movies</string>
     <string name="movies_popularity">Popularity</string>
     <string name="movies_rating">Rating</string>
     <string name="movies_released">Released</string>
     <string name="movies_plot">Plot Summary</string>
+
+    <string name="menu_sort_name">Sort By Name</string>
+    <string name="menu_sort_popularity">Sort By Popularity</string>
+    <string name="menu_sort_rating">Sort By Rating</string>
 
 </resources>

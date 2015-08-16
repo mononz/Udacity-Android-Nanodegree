@@ -7,12 +7,11 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -38,8 +37,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String IMAGE_QUALITY = "w342"; // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
 
-    //private static final String BASE_URL = "https://api.themoviedb.org/3";
-    private static final String BASE_URL = "http://192.168.1.238:3000"; // testing url
+    private static final String BASE_URL = "https://api.themoviedb.org/3";
     private static final String IMAGE_URL = "http://image.tmdb.org/t/p/" + IMAGE_QUALITY;
 
     private static final String PARAM_API = "api_key";
@@ -99,12 +97,12 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
              * here.
              */
 
-            onAccountCreated(newAccount, context);
+            onAccountCreated(newAccount);
         }
         return newAccount;
     }
 
-    private static void onAccountCreated(Account newAccount, Context context) {
+    private static void onAccountCreated(Account newAccount) {
         Log.d(LOG_TAG, "Account created - " + newAccount.name);
     }
 
@@ -126,6 +124,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             // download text from url
             String txt = downloadTextFromUrl(url);
+            if (txt == null) {
+                Toast.makeText(getContext(), "Could not sync movies from TMDB", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // decode downloaded text into array list response
             Movies movies;
@@ -153,7 +155,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         ArrayList<MoviesResult> movies = movie.results;
         ContentValues[] movieValuesArr = new ContentValues[movies.size()];
         for (int i = 0; i < movies.size(); i++) {
-            // Get Obj from GSON
+            // Build Object from GSON
             Obj_Movie obj_movie = new Obj_Movie(
                     bool2int(movies.get(i).adult),
                     movies.get(i).backdrop_path,
@@ -170,7 +172,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                     movies.get(i).vote_average,
                     movies.get(i).vote_count);
 
-            // Convert Obj to a set of Content Values
+            // Convert Object to a set of Content Values
             movieValuesArr[i] = new ContentValues();
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_ADULT, obj_movie.adult);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_BACKDROP, obj_movie.backdrop_path);
@@ -188,10 +190,12 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_VOTE_COUNT, obj_movie.vote_count);
         }
 
+        // New content values -> Drop the old records and bulk insert new movies
         getContext().getContentResolver().delete(MoviesContract.MovieEntry.CONTENT_URI, null, null);
         getContext().getContentResolver().bulkInsert(MoviesContract.MovieEntry.CONTENT_URI, movieValuesArr);
-        Log.d(LOG_TAG, "Sync completed");
+        Log.d(LOG_TAG, "Sync completed + movies updated");
 
+        // Store last sync time
         Preferences_Manager preferences_manager = new Preferences_Manager(getContext());
         preferences_manager.setLastSync(System.currentTimeMillis());
     }
@@ -237,8 +241,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attempting
-            // to parse it.
             return null;
         } finally{
             if (urlConnection != null) {

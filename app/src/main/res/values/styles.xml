@@ -11,6 +11,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButton</item>
+    </style>
+
+    <!-- Set Custom Icon for Overflow Button in ActionBar -->
+    <style name="OverflowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_sort</item>
     </style>
 
     <style name="ButtonStyle">
