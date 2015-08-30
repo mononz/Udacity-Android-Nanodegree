@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- !! INSERT YOUR API KEY BELOW !! -->
+    <!-- <string name="tmdb_api_key">UNCOMMENT AND INSERT TMDB API KEY HERE</string> -->
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">movies.nanodegree.mononz.net</string>
+    <string name="content_authority">net.mononz.nanodegree.movies</string>
+
+    <string name="app_name">Popular Movies</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="icon">icon</string>
+
+    <string name="main_title">Popular Movies</string>
+    <string name="btn_scores">Scores App</string>
+    <string name="btn_library">Library App</string>
+    <string name="btn_bigger">Build it Bigger</string>
+    <string name="btn_bacon">Bacon Reader</string>
+    <string name="btn_capstone">Capstone: My Own App</string>
+
+    <string name="toast">This button will launch my \'%s\' app</string>
+
+    <string name="movies_app">20 Most Popular Movies</string>
+    <string name="movies_popularity">Popularity</string>
+    <string name="movies_rating">Rating</string>
+    <string name="movies_released">Released</string>
+    <string name="movies_plot">Plot Summary</string>
+
+    <string name="menu_sort_name">Sort By Name</string>
+    <string name="menu_sort_popularity">Sort By Popularity</string>
+    <string name="menu_sort_rating">Sort By Rating</string>
+
+</resources>
