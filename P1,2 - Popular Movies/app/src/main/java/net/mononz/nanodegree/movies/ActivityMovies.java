@@ -38,11 +38,9 @@ public class ActivityMovies extends AppCompatActivity {
                 .build());
 
         syncData();
-
     }
 
     private void syncData() {
-
         MovieSyncAdapter.initializeSyncAdapter(this);
 
         Cursor c = getContentResolver().query(MoviesContract.MovieEntry.CONTENT_URI,

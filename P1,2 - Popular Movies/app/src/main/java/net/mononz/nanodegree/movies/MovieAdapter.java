@@ -52,7 +52,6 @@ public class MovieAdapter extends CursorAdapter {
                 .centerCrop()
                 .crossFade()
                 .into(viewHolder.imageView);
-
     }
 
 }

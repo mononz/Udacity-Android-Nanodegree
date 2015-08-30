@@ -1,8 +1,6 @@
 package net.mononz.nanodegree.movies;
 
-import android.content.ContentUris;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -57,8 +55,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
                 int uriId = c.getInt(uriIndex);
                 Log.i(LOG_TAG, "id reference extracted: " + uriId);
 
-                Uri uri = ContentUris.withAppendedId(MoviesContract.MovieEntry.CONTENT_URI, uriId);
-                FragmentDetail fragmentDetail = FragmentDetail.newInstance(uriId, uri);
+                FragmentDetail fragmentDetail = FragmentDetail.newInstance(uriId);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, fragmentDetail)
                         .addToBackStack("detail")

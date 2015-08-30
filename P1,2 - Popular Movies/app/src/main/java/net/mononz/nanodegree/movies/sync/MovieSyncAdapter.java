@@ -174,10 +174,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             // Convert Object to a set of Content Values
             movieValuesArr[i] = new ContentValues();
+            movieValuesArr[i].put(MoviesContract.MovieEntry._ID, obj_movie.id);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_ADULT, obj_movie.adult);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_BACKDROP, obj_movie.backdrop_path);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_GENRE, obj_movie.genre_ids);
-            movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_MOVIE_ID, obj_movie.id);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_ORIGINAL_LANGUAGE, obj_movie.original_language);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_ORIGINAL_TITLE, obj_movie.original_title);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_OVERVIEW, obj_movie.overview);

@@ -1,14 +1,16 @@
 package net.mononz.nanodegree.movies;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import net.mononz.nanodegree.movies.data.FavouritesContract;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
 
 public class FragmentDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private Cursor mDetailCursor;
-    private int mPosition;
-    private Uri mUri;
     private static final int CURSOR_LOADER_ID = 0;
+
+    private int mMovieId;
+    private String TAG_MOVIE_ID = "mMovieId";
 
     private ImageView mPoster;
     private TextView mPopularity;
@@ -33,11 +37,14 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     private TextView mPlot;
     private TextView mReleased;
 
-    public static FragmentDetail newInstance(int position, Uri uri) {
+    private boolean favourite;
+
+    private Menu menu;
+
+    public static FragmentDetail newInstance(int movie_id) {
         FragmentDetail fragment = new FragmentDetail();
         Bundle args = new Bundle();
-        fragment.mPosition = position;
-        fragment.mUri = uri;
+        fragment.mMovieId = movie_id;
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,8 +72,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
 
         if (savedInstanceState != null) {
             // Restore last state
-            mPosition = savedInstanceState.getInt("mPosition");
-            mUri = Uri.parse(savedInstanceState.getString("mUri"));
+            mMovieId = savedInstanceState.getInt(TAG_MOVIE_ID);
             getLoaderManager().initLoader(CURSOR_LOADER_ID, new Bundle(), FragmentDetail.this);
         } else {
             Bundle args = this.getArguments();
@@ -80,31 +86,62 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         mReleased = (TextView) rootView.findViewById(R.id.released);
 
         Bundle args = this.getArguments();
-        getLoaderManager().initLoader(CURSOR_LOADER_ID, args, FragmentDetail.this);
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, args, this);
 
         setHasOptionsMenu(true);
         return rootView;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("mPosition", mPosition);
-        outState.putString("mUri", mUri.toString());
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_detail, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        this.menu = menu;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            getFragmentManager().popBackStack();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getFragmentManager().popBackStack();
+                break;
+            case R.id.favourite_yes:
+                getActivity().getContentResolver().delete(
+                        FavouritesContract.FavouritesEntry.CONTENT_URI,
+                        FavouritesContract.FavouritesEntry._ID + "=?",
+                        new String[]{String.valueOf(mMovieId)});
+                favourite = !favourite;
+                showFavouriteIcon();
+                break;
+            case R.id.favourite_no:
+                ContentValues values = new ContentValues();
+                values.put(FavouritesContract.FavouritesEntry._ID, String.valueOf(mMovieId));
+                values.put(FavouritesContract.FavouritesEntry.COLUMN_DATE_CREATED, System.currentTimeMillis());
+                getActivity().getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI, values);
+                favourite = !favourite;
+                showFavouriteIcon();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+        return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(TAG_MOVIE_ID, mMovieId);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        //mListener = null;
     }
 
     @Override
@@ -113,10 +150,11 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         String [] selectionArgs = null;
         if (args != null) {
             selection = MoviesContract.MovieEntry._ID;
-            selectionArgs = new String[]{String.valueOf(mPosition)};
+            selectionArgs = new String[]{String.valueOf(mMovieId)};
         }
         return new CursorLoader(getActivity(),
-                mUri, null, selection, selectionArgs, null);
+                ContentUris.withAppendedId(MoviesContract.MovieEntry.CONTENT_URI, mMovieId), null,
+                selection, selectionArgs, null);
     }
 
     @Override
@@ -129,7 +167,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDetailCursor = data;
         mDetailCursor.moveToFirst();
-        DatabaseUtils.dumpCursor(data);
+        //DatabaseUtils.dumpCursor(data);
 
         int nameIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE);
         ((ActivityMovies) getActivity()).toolbar.setTitle(mDetailCursor.getString(nameIndex));
@@ -152,12 +190,27 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         int releasedIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE);
         mReleased.setText(mDetailCursor.getString(releasedIndex));
 
+        int createdDateIndex = mDetailCursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_DATE_CREATED);
+        favourite = !mDetailCursor.isNull(createdDateIndex);
+        showFavouriteIcon();
+
+        mReleased.setText(mDetailCursor.getString(releasedIndex));
     }
 
     // reset CursorAdapter on Loader Reset
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
         mDetailCursor = null;
+    }
+
+    private void showFavouriteIcon() {
+        if (favourite) {
+            menu.findItem(R.id.favourite_yes).setVisible(true);
+            menu.findItem(R.id.favourite_no).setVisible(false);
+        } else {
+            menu.findItem(R.id.favourite_yes).setVisible(false);
+            menu.findItem(R.id.favourite_no).setVisible(true);
+        }
     }
 
 }

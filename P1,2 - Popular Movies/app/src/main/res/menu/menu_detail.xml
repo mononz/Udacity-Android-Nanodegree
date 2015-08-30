@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ActivityMovies">
+
+    <item
+        android:id="@+id/favourite_yes"
+        android:title="@string/menu_sort_name"
+        android:icon="@drawable/ic_favourite_yes"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/favourite_no"
+        android:title="@string/menu_sort_name"
+        android:icon="@drawable/ic_favourite_no"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:visible="true" />
+
+</menu>
