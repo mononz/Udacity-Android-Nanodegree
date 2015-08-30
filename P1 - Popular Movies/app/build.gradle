@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'debug'
+            keyPassword 'z93VnQpCOr6q'
+            storeFile file('../../.debug.jks')
+            storePassword 'z93VnQpCOr6q'
+        }
+    }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "net.mononz.nanodegree.movies"
         minSdkVersion 15

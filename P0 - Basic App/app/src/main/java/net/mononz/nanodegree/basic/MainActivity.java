@@ -1,5 +1,6 @@
 package net.mononz.nanodegree.basic;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,25 +41,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void btn_click(View v) {
         Button button = (Button) v;
-        showToast(button.getText().toString());
         switch (v.getId()) {
             case R.id.btn_movies:
-                // launch movies activity
+                try {
+                    Intent intent = getPackageManager().getLaunchIntentForPackage("net.mononz.nanodegree.movies");
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(this, "Please install my 'Popular Movies App'", Toast.LENGTH_SHORT).show();
+                }
                 break;
-            case R.id.btn_scores:
-                // launch scores activity
-                break;
-            case R.id.btn_library:
-                // launch library activity
-                break;
-            case R.id.btn_bigger:
-                // launch bigger activity
-                break;
-            case R.id.btn_bacon:
-                // launch bacon activity
-                break;
-            case R.id.btn_capstone:
-                // launch capstone activity
+            default:
+                showToast(button.getText().toString());
                 break;
         }
     }
