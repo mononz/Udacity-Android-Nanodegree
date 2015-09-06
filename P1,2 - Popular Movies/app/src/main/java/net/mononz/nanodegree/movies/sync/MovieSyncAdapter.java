@@ -59,6 +59,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
+        Log.d(LOG_TAG, "syncImmediately");
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -113,6 +114,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     // API request for Top 20 movies from TMDB
     public void getPopularMovies() {
+        Log.d(LOG_TAG, "getPopularMovies");
         // https://api.themoviedb.org/3/discover/movie?api_key=XXX&sort_by=popularity.desc
         try {
             Uri builtUri = Uri.parse(BASE_URL + "/discover/movie?").buildUpon()
@@ -141,9 +143,10 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             if (movies == null)
                 return;
 
+            Log.d(LOG_TAG, "insertDataMovies");
             insertDataMovies(movies);
-
         } catch (MalformedURLException e) {
+            Log.d(LOG_TAG, "MalformedURLException");
             e.printStackTrace();
         }
     }
@@ -189,6 +192,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE, obj_movie.vote_average);
             movieValuesArr[i].put(MoviesContract.MovieEntry.COLUMN_VOTE_COUNT, obj_movie.vote_count);
         }
+        Log.d(LOG_TAG, "NumMovies " + movieValuesArr.length);
 
         // New content values -> Drop the old records and bulk insert new movies
         getContext().getContentResolver().delete(MoviesContract.MovieEntry.CONTENT_URI, null, null);

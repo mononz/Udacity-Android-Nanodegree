@@ -31,7 +31,7 @@ public class AppProvider extends ContentProvider {
         final String authority = CONTENT_AUTHORITY;
 
         matcher.addURI(authority, MoviesContract.MovieEntry.TABLE_MOVIES, MOVIE);
-        matcher.addURI(authority, MoviesContract.MovieEntry.TABLE_MOVIES, MOVIES_WITH_FAVOURITES);
+        //matcher.addURI(authority, MoviesContract.MovieEntry.TABLE_MOVIES, MOVIES_WITH_FAVOURITES);
         matcher.addURI(authority, MoviesContract.MovieEntry.TABLE_MOVIES + "/#", MOVIE_WITH_ID);
 
         matcher.addURI(authority, FavouritesContract.FavouritesEntry.TABLE_FAVOURITES, FAVOURITE);

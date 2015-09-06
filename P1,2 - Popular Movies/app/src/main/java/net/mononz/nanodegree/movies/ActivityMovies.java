@@ -11,10 +11,11 @@ import com.facebook.stetho.Stetho;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
 
-public class ActivityMovies extends AppCompatActivity {
+public class ActivityMovies extends AppCompatActivity implements FragmentMain.Callbacks {
 
     public Toolbar toolbar;
 
+    private boolean mTwoPane;
     private static final long THRESHOLD_HOURS = 6;
     private static final long THRESHOLD_MILLIS = THRESHOLD_HOURS * 60 * 60 * 1000;
 
@@ -23,9 +24,13 @@ public class ActivityMovies extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentMain()).commit();
+        if (findViewById(R.id.detail_container) != null) {
+            mTwoPane = true;
         }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, new FragmentMain())
+                .commit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -40,6 +45,21 @@ public class ActivityMovies extends AppCompatActivity {
         syncData();
     }
 
+    @Override
+    public void onItemSelected(int id) {
+        FragmentDetail fragmentDetail = FragmentDetail.newInstance(id);
+        if (mTwoPane) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.detail_container, fragmentDetail)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, fragmentDetail)
+                    .addToBackStack("detail")
+                    .commit();
+        }
+    }
+
     private void syncData() {
         MovieSyncAdapter.initializeSyncAdapter(this);
 
@@ -51,6 +71,7 @@ public class ActivityMovies extends AppCompatActivity {
         long lastSync = preferences_manager.getLastSync();
         long nextSync = System.currentTimeMillis() - (lastSync + THRESHOLD_MILLIS);
         if (nextSync > 0 || c.getCount() == 0) {
+            Log.d("Sync now!", "" + nextSync + "ms overdue");
             MovieSyncAdapter.syncImmediately(this);
         } else {
             Log.d("Sync wait", "" + Math.abs(nextSync) + "ms till next sync");

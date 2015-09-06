@@ -27,7 +27,24 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
     private static final int CURSOR_LOADER_ID = 0;
 
+    private Callbacks mCallbacks = sDummyCallbacks;
+    public interface Callbacks {
+        void onItemSelected(int id);
+    }
+
+    private static Callbacks sDummyCallbacks = new Callbacks() {
+        @Override
+        public void onItemSelected(int id) {
+        }
+    };
+
     public FragmentMain() { }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = sDummyCallbacks;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -41,6 +58,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        mCallbacks = (Callbacks) getActivity();
 
         mFlavorAdapter = new MovieAdapter(getActivity(), null, 0, CURSOR_LOADER_ID);
         final GridView mGridView = (GridView) rootView.findViewById(R.id.flavors_grid);
@@ -53,13 +71,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
                 c.moveToPosition(position);
                 int uriIndex = c.getColumnIndex(MoviesContract.MovieEntry._ID);
                 int uriId = c.getInt(uriIndex);
-                Log.i(LOG_TAG, "id reference extracted: " + uriId);
-
-                FragmentDetail fragmentDetail = FragmentDetail.newInstance(uriId);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragmentDetail)
-                        .addToBackStack("detail")
-                        .commit();
+                mCallbacks.onItemSelected(uriId);
             }
         });
 
