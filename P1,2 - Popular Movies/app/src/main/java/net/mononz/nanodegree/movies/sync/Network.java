@@ -24,8 +24,14 @@ import retrofit.http.Query;
 
 public class Network {
 
+    private static final String BASE_URL = "https://api.themoviedb.org/3/";
+
+    private static final String IMAGE_QUALITY = "w342"; // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
+    private static final String IMAGE_URL = "http://image.tmdb.org/t/p/" + IMAGE_QUALITY;
+
+
     Retrofit restAdapter = new Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(BASE_URL)
             .addConverter(String.class, new ToStringConverter())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -65,6 +71,12 @@ public class Network {
         } catch (IOException e) {
             Log.e("IOException", e.toString());
         }
+    }
+
+    // API request for image (banner/poster/etc..) from TMDB
+    public static String getImage(String image_id) {
+        // http://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg
+        return IMAGE_URL + image_id;
     }
 
 }

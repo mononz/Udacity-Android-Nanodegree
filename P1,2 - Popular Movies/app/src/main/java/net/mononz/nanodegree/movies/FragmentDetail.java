@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 
 import net.mononz.nanodegree.movies.data.FavouritesContract;
 import net.mononz.nanodegree.movies.data.MoviesContract;
-import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
+import net.mononz.nanodegree.movies.sync.Network;
 
 public class FragmentDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -49,20 +49,11 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         return fragment;
     }
 
-    public FragmentDetail() {
-        // Required empty public constructor
-    }
+    public FragmentDetail() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //((ActivityMovies) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //((ActivityMovies) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -162,7 +153,6 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         super.onViewCreated(view, savedInstanceState);
     }
 
-    // Set the cursor in our CursorAdapter once the Cursor is loaded
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDetailCursor = data;
@@ -174,7 +164,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
 
         int posterIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER);
         Glide.with(this)
-                .load(MovieSyncAdapter.getImage(mDetailCursor.getString(posterIndex)))
+                .load(Network.getImage(mDetailCursor.getString(posterIndex)))
                 .into(mPoster);
 
         int popularityIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POPULARITY);

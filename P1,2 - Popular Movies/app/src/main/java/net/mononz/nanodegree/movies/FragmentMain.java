@@ -1,13 +1,11 @@
 package net.mononz.nanodegree.movies;
 
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,7 +60,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mCallbacks = (Callbacks) getActivity();
 
-        mFlavorAdapter = new MovieAdapter(getActivity(), null, 0, CURSOR_LOADER_ID);
+        mFlavorAdapter = new MovieAdapter(getActivity(), null, 0);
         final GridView mGridView = (GridView) rootView.findViewById(R.id.flavors_grid);
         mGridView.setAdapter(mFlavorAdapter);
 
@@ -79,27 +77,6 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
         setHasOptionsMenu(true);
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        /*Toolbar toolbar;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            this.setSupportActionBar(toolbar);
-        }
-        ((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.movies_app));
-        ((ActivityMovies) getActivity()).toolbar.setSubtitle(preferences_manager.getSortOptionString());
-        ((ActivityMovies) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((ActivityMovies) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);*/
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        /*((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.movies_app));
-        ((ActivityMovies) getActivity()).toolbar.setSubtitle(null);*/
     }
 
     @Override

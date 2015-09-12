@@ -11,13 +11,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import net.mononz.nanodegree.movies.data.MoviesContract;
-import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
+import net.mononz.nanodegree.movies.sync.Network;
 
 public class MovieAdapter extends CursorAdapter {
-
-    private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
-    private Context mContext;
-    private static int sLoaderID;
 
     public static class ViewHolder {
 
@@ -28,10 +24,9 @@ public class MovieAdapter extends CursorAdapter {
         }
     }
 
-    public MovieAdapter(Context context, Cursor c, int flags, int loaderID){
+    public MovieAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         mContext = context;
-        sLoaderID = loaderID;
     }
 
     @Override
@@ -48,7 +43,7 @@ public class MovieAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         int imageIndex = cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER);
         Glide.with(context)
-                .load(MovieSyncAdapter.getImage(cursor.getString(imageIndex)))
+                .load(Network.getImage(cursor.getString(imageIndex)))
                 .centerCrop()
                 .crossFade()
                 .into(viewHolder.imageView);

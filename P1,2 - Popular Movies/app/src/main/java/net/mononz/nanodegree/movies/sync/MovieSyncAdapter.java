@@ -28,9 +28,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = MovieSyncAdapter.class.getSimpleName();
 
-    private static final String IMAGE_QUALITY = "w342"; // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
-    private static final String IMAGE_URL = "http://image.tmdb.org/t/p/" + IMAGE_QUALITY;
-
     public MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -159,12 +156,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     // HELPER FUNCTIONS
-
-    // API request for image (banner/poster/etc..) from TMDB
-    public static String getImage(String image_id) {
-        // http://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg
-        return IMAGE_URL + image_id;
-    }
 
     // Helper function for storing booleans as integers in db
     private int bool2int(boolean b) {
