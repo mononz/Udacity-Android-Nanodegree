@@ -30,13 +30,10 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
                 .commit();
 
         main_toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-
         if (findViewById(R.id.detail_container) != null) {
             mTwoPane = true;
             detail_toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
             setSupportActionBar(detail_toolbar);
-            main_toolbar.setTitle(getString(R.string.app_name));
-            detail_toolbar.setTitle(" ");
         } else {
             setSupportActionBar(main_toolbar);
         }

@@ -150,7 +150,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         String selection = null;
         String [] selectionArgs = null;
         if (args != null) {
-            selection = MoviesContract.MovieEntry._ID;
+            selection = MoviesContract.MovieEntry.FULL_ID;
             selectionArgs = new String[]{String.valueOf(mMovieId)};
         }
         return new CursorLoader(getActivity(),

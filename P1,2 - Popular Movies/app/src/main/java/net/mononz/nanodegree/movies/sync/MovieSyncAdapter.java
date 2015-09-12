@@ -171,60 +171,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     // HELPER FUNCTIONS
 
-    private String downloadTextFromUrl(URL url) {
-        Log.d("url", url.toString());
-
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String strMovies = null;
-
-        try {
-            // Create the request to TMDB, and open the connection
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-
-            // Read the input stream into a String
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuilder buffer = new StringBuilder();
-            if (inputStream == null) {
-                // Nothing to do.
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return null;
-            }
-            strMovies = buffer.toString();
-
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
-            return null;
-        } finally{
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
-                }
-            }
-        }
-        return strMovies;
-    }
-
     // API request for image (banner/poster/etc..) from TMDB
     public static String getImage(String image_id) {
         // http://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg

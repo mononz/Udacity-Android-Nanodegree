@@ -1,12 +1,12 @@
 package net.mononz.nanodegree.movies;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -149,12 +149,13 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String selection = null;
         String sort_option = MoviesContract.MovieEntry.SORT_POPULARITY;
         switch (preferences_manager.getSortOption()) {
             case Preferences_Manager.SORT_FAVOURITES:
-                return new CursorLoader(getActivity(),
-                        MoviesContract.MovieEntry.CONTENT_URI,
-                        null, FavouritesContract.FavouritesEntry.FULL_ID + " IS NOT NULL", null, null);
+                selection = FavouritesContract.FavouritesEntry.FULL_ID;
+                sort_option = MoviesContract.MovieEntry.SORT_TITLE;
+                break;
             case Preferences_Manager.SORT_NAME:
                 sort_option = MoviesContract.MovieEntry.SORT_TITLE;
                 break;
@@ -169,7 +170,8 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
 
         return new CursorLoader(getActivity(),
                 MoviesContract.MovieEntry.CONTENT_URI,
-                null, null, null, sort_option);
+                new String[]{MoviesContract.MovieEntry.TABLE_MOVIES + ".*", FavouritesContract.FavouritesEntry.COLUMN_DATE_CREATED},
+                selection, null, sort_option);
     }
 
     @Override
