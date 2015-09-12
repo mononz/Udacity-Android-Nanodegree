@@ -21,17 +21,15 @@ public class AppProvider extends ContentProvider {
     private AppDBHelper mOpenHelper;
 
     private static final int MOVIE = 100;
-    private static final int MOVIES_WITH_FAVOURITES = 200;
-    private static final int MOVIE_WITH_ID = 300;
-    private static final int FAVOURITE = 400;
-    private static final int FAVOURITE_WITH_ID = 500;
+    private static final int MOVIE_WITH_ID = 200;
+    private static final int FAVOURITE = 300;
+    private static final int FAVOURITE_WITH_ID = 400;
 
     private static UriMatcher buildUriMatcher(){
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = CONTENT_AUTHORITY;
 
         matcher.addURI(authority, MoviesContract.MovieEntry.TABLE_MOVIES, MOVIE);
-        //matcher.addURI(authority, MoviesContract.MovieEntry.TABLE_MOVIES, MOVIES_WITH_FAVOURITES);
         matcher.addURI(authority, MoviesContract.MovieEntry.TABLE_MOVIES + "/#", MOVIE_WITH_ID);
 
         matcher.addURI(authority, FavouritesContract.FavouritesEntry.TABLE_FAVOURITES, FAVOURITE);
@@ -50,8 +48,6 @@ public class AppProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case MOVIE:
-                return MoviesContract.MovieEntry.CONTENT_DIR_TYPE;
-            case MOVIES_WITH_FAVOURITES:
                 return MoviesContract.MovieEntry.CONTENT_DIR_TYPE;
             case MOVIE_WITH_ID:
                 return MoviesContract.MovieEntry.CONTENT_ITEM_TYPE;
@@ -76,20 +72,12 @@ public class AppProvider extends ContentProvider {
                         selection, selectionArgs,
                         null, null, sortOrder);
                 break;
-            // All Movies selected
-            case MOVIES_WITH_FAVOURITES:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        MoviesContract.MovieEntry.TABLE_MOVIES,
-                        projection,
-                        selection, selectionArgs,
-                        null, null, sortOrder);
-                break;
             // Individual movie based on Id selected
             case MOVIE_WITH_ID:
-                SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-                qb.setTables(MoviesContract.MovieEntry.TABLE_MOVIES +
+                SQLiteQueryBuilder qb1 = new SQLiteQueryBuilder();
+                qb1.setTables(MoviesContract.MovieEntry.TABLE_MOVIES +
                         " LEFT JOIN " + FavouritesContract.FavouritesEntry.TABLE_FAVOURITES + " ON " + MoviesContract.MovieEntry.FULL_ID + "=" + FavouritesContract.FavouritesEntry.FULL_ID);
-                retCursor = qb.query(mOpenHelper.getReadableDatabase(),
+                retCursor = qb1.query(mOpenHelper.getReadableDatabase(),
                         projection,
                         MoviesContract.MovieEntry.FULL_ID + "=?",
                         new String[] {String.valueOf(ContentUris.parseId(uri))},
@@ -97,8 +85,10 @@ public class AppProvider extends ContentProvider {
                 break;
             // All Favourites added
             case FAVOURITE:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        FavouritesContract.FavouritesEntry.TABLE_FAVOURITES,
+                SQLiteQueryBuilder qb2 = new SQLiteQueryBuilder();
+                qb2.setTables(MoviesContract.MovieEntry.TABLE_MOVIES +
+                        " LEFT JOIN " + FavouritesContract.FavouritesEntry.TABLE_FAVOURITES + " ON " + MoviesContract.MovieEntry.FULL_ID + "=" + FavouritesContract.FavouritesEntry.FULL_ID);
+                retCursor = qb2.query(mOpenHelper.getReadableDatabase(),
                         projection,
                         selection, selectionArgs,
                         null, null, sortOrder);
@@ -124,16 +114,6 @@ public class AppProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         Uri returnUri;
         switch (sUriMatcher.match(uri)) {
-            case MOVIE: {
-                long _id = db.insert(MoviesContract.MovieEntry.TABLE_MOVIES, null, values);
-                // insert unless it is already contained in the database
-                if (_id > 0) {
-                    returnUri = MoviesContract.MovieEntry.buildMoviesUri(_id);
-                } else {
-                    throw new android.database.SQLException("Failed to insert row into: " + uri);
-                }
-                break;
-            }
             case FAVOURITE: {
                 long _id = db.insert(FavouritesContract.FavouritesEntry.TABLE_FAVOURITES, null, values);
                 if (_id > 0) {
@@ -161,18 +141,8 @@ public class AppProvider extends ContentProvider {
             case MOVIE:
                 numDeleted = db.delete(MoviesContract.MovieEntry.TABLE_MOVIES, selection, selectionArgs);
                 break;
-            case MOVIE_WITH_ID:
-                numDeleted = db.delete(MoviesContract.MovieEntry.TABLE_MOVIES,
-                        MoviesContract.MovieEntry._ID + " = ?",
-                        new String[]{String.valueOf(ContentUris.parseId(uri))});
-                break;
             case FAVOURITE:
                 numDeleted = db.delete(FavouritesContract.FavouritesEntry.TABLE_FAVOURITES, selection, selectionArgs);
-                break;
-            case FAVOURITE_WITH_ID:
-                numDeleted = db.delete(FavouritesContract.FavouritesEntry.TABLE_FAVOURITES,
-                        FavouritesContract.FavouritesEntry._ID + " = ?",
-                        new String[]{String.valueOf(ContentUris.parseId(uri))});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -232,18 +202,6 @@ public class AppProvider extends ContentProvider {
             throw new IllegalArgumentException("Cannot have null content values");
         }
         switch (sUriMatcher.match(uri)) {
-            case MOVIE:
-                numUpdated = db.update(MoviesContract.MovieEntry.TABLE_MOVIES,
-                        contentValues,
-                        selection,
-                        selectionArgs);
-                break;
-            case MOVIE_WITH_ID:
-                numUpdated = db.update(MoviesContract.MovieEntry.TABLE_MOVIES,
-                        contentValues,
-                        MoviesContract.MovieEntry._ID + "=?",
-                        new String[] {String.valueOf(ContentUris.parseId(uri))});
-                break;
             case FAVOURITE_WITH_ID:
                 numUpdated = db.update(FavouritesContract.FavouritesEntry.TABLE_FAVOURITES,
                         contentValues,

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -82,17 +83,22 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onResume() {
         super.onResume();
+        /*Toolbar toolbar;
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            this.setSupportActionBar(toolbar);
+        }
         ((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.movies_app));
         ((ActivityMovies) getActivity()).toolbar.setSubtitle(preferences_manager.getSortOptionString());
         ((ActivityMovies) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((ActivityMovies) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+        ((ActivityMovies) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);*/
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.movies_app));
-        ((ActivityMovies) getActivity()).toolbar.setSubtitle(null);
+        /*((ActivityMovies) getActivity()).toolbar.setTitle(getString(R.string.movies_app));
+        ((ActivityMovies) getActivity()).toolbar.setSubtitle(null);*/
     }
 
     @Override
@@ -158,7 +164,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
                 sort_option = MoviesContract.MovieEntry.SORT_RATING;
                 break;
         }
-        ((ActivityMovies) getActivity()).toolbar.setSubtitle(preferences_manager.getSortOptionString());
+        //((ActivityMovies) getActivity()).toolbar.setSubtitle(preferences_manager.getSortOptionString());
 
         return new CursorLoader(getActivity(),
                 MoviesContract.MovieEntry.CONTENT_URI,

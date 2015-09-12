@@ -13,28 +13,32 @@ import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
 
 public class ActivityMovies extends AppCompatActivity implements FragmentMain.Callbacks {
 
-    public Toolbar toolbar;
-
     private boolean mTwoPane;
     private static final long THRESHOLD_HOURS = 6;
     private static final long THRESHOLD_MILLIS = THRESHOLD_HOURS * 60 * 60 * 1000;
+
+    public Toolbar main_toolbar;
+    public Toolbar detail_toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
 
-        if (findViewById(R.id.detail_container) != null) {
-            mTwoPane = true;
-        }
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, new FragmentMain())
                 .commit();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        main_toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+
+        if (findViewById(R.id.detail_container) != null) {
+            mTwoPane = true;
+            detail_toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+            setSupportActionBar(detail_toolbar);
+            main_toolbar.setTitle(getString(R.string.app_name));
+            detail_toolbar.setTitle("");
+        } else {
+            setSupportActionBar(main_toolbar);
         }
 
         Stetho.initialize(Stetho.newInitializerBuilder(this)
@@ -57,6 +61,22 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
                     .replace(R.id.main_container, fragmentDetail)
                     .addToBackStack("detail")
                     .commit();
+        }
+    }
+
+    public void setToolbarTitle(String str) {
+        if (mTwoPane) {
+            detail_toolbar.setTitle(str);
+        } else {
+            main_toolbar.setTitle(str);
+        }
+    }
+
+    public void toolbars(String str) {
+        if (mTwoPane) {
+            detail_toolbar.setTitle(str);
+        } else {
+            main_toolbar.setTitle(str);
         }
     }
 

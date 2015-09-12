@@ -61,8 +61,8 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onResume() {
         super.onResume();
-        ((ActivityMovies) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((ActivityMovies) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //((ActivityMovies) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //((ActivityMovies) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -170,7 +170,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         //DatabaseUtils.dumpCursor(data);
 
         int nameIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE);
-        ((ActivityMovies) getActivity()).toolbar.setTitle(mDetailCursor.getString(nameIndex));
+        ((ActivityMovies) getActivity()).toolbars(mDetailCursor.getString(nameIndex));
 
         int posterIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER);
         Glide.with(this)
