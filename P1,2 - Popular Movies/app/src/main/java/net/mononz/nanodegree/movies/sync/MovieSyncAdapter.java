@@ -8,15 +8,16 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import net.mononz.nanodegree.movies.Network;
 import net.mononz.nanodegree.movies.Preferences_Manager;
 import net.mononz.nanodegree.movies.R;
+import net.mononz.nanodegree.movies.api.ErrorCode;
 import net.mononz.nanodegree.movies.api.Movies;
 import net.mononz.nanodegree.movies.api.MoviesResult;
 import net.mononz.nanodegree.movies.data.MoviesContract;
@@ -27,22 +28,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = MovieSyncAdapter.class.getSimpleName();
 
     private static final String IMAGE_QUALITY = "w342"; // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
-
-    private static final String BASE_URL = "https://api.themoviedb.org/3";
     private static final String IMAGE_URL = "http://image.tmdb.org/t/p/" + IMAGE_QUALITY;
-
-    private static final String PARAM_API = "api_key";
-    private static final String PARAM_SORT = "sort_by";
-
 
     public MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -77,27 +75,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public static Account getSyncAccount(Context context) {
         // Get an instance of the Android account manager
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
-
         // Create the account type and default account
         Account newAccount = new Account(context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
-
         // If the password doesn't exist, the account doesn't exist
         if (null == accountManager.getPassword(newAccount)) {
-
-            /*
-             * Add the account and account type, no password or user data
-             * If successful, return the Account object, otherwise report an error.
-             */
+            // Add the account and account type, no password or user data If successful, return the Account object, otherwise report an error.
             if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
                 return null;
             }
-            /*
-             * If you don't set android:syncable="true" in
-             * in your <provider> element in the manifest,
-             * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
-             * here.
-             */
-
             onAccountCreated(newAccount);
         }
         return newAccount;
@@ -115,46 +100,25 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     // API request for Top 20 movies from TMDB
     public void getPopularMovies() {
         Log.d(LOG_TAG, "getPopularMovies");
-        // https://api.themoviedb.org/3/discover/movie?api_key=XXX&sort_by=popularity.desc
-        try {
-            Uri builtUri = Uri.parse(BASE_URL + "/discover/movie?").buildUpon()
-                    .appendQueryParameter(PARAM_API, getContext().getString(R.string.tmdb_api_key))
-                    .appendQueryParameter(PARAM_SORT, "popularity.desc")
-                    .build();
-
-            URL url = new URL(builtUri.toString());
-
-            // download text from url
-            String txt = downloadTextFromUrl(url);
-            if (txt == null) {
-                Toast.makeText(getContext(), "Could not sync movies from TMDB", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // decode downloaded text into array list response
-            Movies movies;
-            try {
+        new Network().service.getMovies(getContext().getString(R.string.tmdb_api_key), "popularity.desc", new Callback<String>() {
+            @Override
+            public void success(String str, Response ignored) {
                 Gson gson = new Gson();
-                movies = gson.fromJson(txt, Movies.class);
-            } catch (Exception e) {
-                movies = null;
+                Movies movies = gson.fromJson(str, Movies.class);
+                Log.d(LOG_TAG, "insertDataMovies");
+                insertDataMovies(movies);
             }
-
-            if (movies == null)
-                return;
-
-            Log.d(LOG_TAG, "insertDataMovies");
-            insertDataMovies(movies);
-        } catch (MalformedURLException e) {
-            Log.d(LOG_TAG, "MalformedURLException");
-            e.printStackTrace();
-        }
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Gson gson = new Gson();
+                ErrorCode err = gson.fromJson(retrofitError.getBody().toString(), ErrorCode.class);
+                Toast.makeText(getContext(), "(" + err.status_code + ") " + err.status_message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Bulk Insert movies into db
     public void insertDataMovies(Movies movie) {
-        // Prepare for bulk insert of content values by creating content values array
-
         ArrayList<MoviesResult> movies = movie.results;
         ContentValues[] movieValuesArr = new ContentValues[movies.size()];
         for (int i = 0; i < movies.size(); i++) {

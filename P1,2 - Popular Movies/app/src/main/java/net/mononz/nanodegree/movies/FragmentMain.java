@@ -21,8 +21,6 @@ import net.mononz.nanodegree.movies.data.MoviesContract;
 
 public class FragmentMain extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String LOG_TAG = FragmentMain.class.getSimpleName();
-
     private MovieAdapter mFlavorAdapter;
     private Preferences_Manager preferences_manager;
 
