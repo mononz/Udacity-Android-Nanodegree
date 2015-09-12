@@ -14,7 +14,7 @@ import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
 public class ActivityMovies extends AppCompatActivity implements FragmentMain.Callbacks {
 
     private boolean mTwoPane;
-    private static final long THRESHOLD_HOURS = 6;
+    private static final long THRESHOLD_HOURS = 0;
     private static final long THRESHOLD_MILLIS = THRESHOLD_HOURS * 60 * 60 * 1000;
 
     public Toolbar main_toolbar;
@@ -34,6 +34,7 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
             mTwoPane = true;
             detail_toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
             setSupportActionBar(detail_toolbar);
+            main_toolbar.setTitle(getString(R.string.app_name));
         } else {
             setSupportActionBar(main_toolbar);
         }
@@ -59,6 +60,10 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
                     .addToBackStack("detail")
                     .commit();
         }
+    }
+    @Override
+    public void onUpdateToolbar(String str) {
+        main_toolbar.setSubtitle(str);
     }
 
     public void toolbars(String str) {

@@ -10,30 +10,19 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import net.mononz.nanodegree.movies.Network;
 import net.mononz.nanodegree.movies.Preferences_Manager;
 import net.mononz.nanodegree.movies.R;
-import net.mononz.nanodegree.movies.api.ErrorCode;
 import net.mononz.nanodegree.movies.api.Movies;
 import net.mononz.nanodegree.movies.api.MoviesResult;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.data.Obj_Movie;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
+import retrofit.Call;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
 
 public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -96,23 +85,23 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         getSyncAccount(context);
     }
 
-
     // API request for Top 20 movies from TMDB
     public void getPopularMovies() {
         Log.d(LOG_TAG, "getPopularMovies");
-        new Network().service.getMovies(getContext().getString(R.string.tmdb_api_key), "popularity.desc", new Callback<String>() {
+        Call<Movies> call = new Network().service.getMovies(getContext().getString(R.string.tmdb_api_key), "popularity.desc");
+        call.enqueue(new Callback<Movies>() {
             @Override
-            public void success(String str, Response ignored) {
-                Gson gson = new Gson();
-                Movies movies = gson.fromJson(str, Movies.class);
-                Log.d(LOG_TAG, "insertDataMovies");
-                insertDataMovies(movies);
+            public void onResponse(Response<Movies> response) {
+                Log.d("onResponse", "" + response.code() + " " + response.message());
+                if (response.isSuccess()) {
+                    insertDataMovies(response.body());
+                } else {
+                    Network.handleErrorResponse(getContext(), response);
+                }
             }
             @Override
-            public void failure(RetrofitError retrofitError) {
-                Gson gson = new Gson();
-                ErrorCode err = gson.fromJson(retrofitError.getBody().toString(), ErrorCode.class);
-                Toast.makeText(getContext(), "(" + err.status_code + ") " + err.status_message, Toast.LENGTH_SHORT).show();
+            public void onFailure(Throwable t) {
+                Log.e(LOG_TAG, t.toString());
             }
         });
     }

@@ -30,12 +30,14 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     private Callbacks mCallbacks = sDummyCallbacks;
     public interface Callbacks {
         void onItemSelected(int id);
+        void onUpdateToolbar(String str);
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(int id) {
-        }
+        public void onItemSelected(int id) {}
+        @Override
+        public void onUpdateToolbar(String str) {}
     };
 
     public FragmentMain() { }
@@ -166,7 +168,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
                 sort_option = MoviesContract.MovieEntry.SORT_RATING;
                 break;
         }
-        //((ActivityMovies) getActivity()).toolbar.setSubtitle(preferences_manager.getSortOptionString());
+        mCallbacks.onUpdateToolbar(preferences_manager.getSortOptionString());
 
         return new CursorLoader(getActivity(),
                 MoviesContract.MovieEntry.CONTENT_URI,
