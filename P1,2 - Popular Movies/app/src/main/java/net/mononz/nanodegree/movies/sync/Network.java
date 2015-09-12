@@ -11,6 +11,8 @@ import com.squareup.okhttp.ResponseBody;
 
 import net.mononz.nanodegree.movies.api.ErrorCode;
 import net.mononz.nanodegree.movies.api.Movies;
+import net.mononz.nanodegree.movies.api.Reviews;
+import net.mononz.nanodegree.movies.api.Videos;
 
 import java.io.IOException;
 
@@ -41,11 +43,26 @@ public class Network {
     public Network() { }
 
     public interface APIService {
+
         // https://api.themoviedb.org/3/discover/movie?api_key=XXX&sort_by=popularity.desc
         @GET("discover/movie")
         Call<Movies> getMovies(
                 @Query("api_key") String api_key,
                 @Query("sort_by") String sort_by);
+
+        // https://api.themoviedb.org/3/movie/102899/reviews?api_key=XXX
+        @GET("movie/{id}/reviews")
+        Call<Reviews> getMovieReviews(
+                @Query("id") String id,
+                @Query("api_key") String api_key);
+
+        // https://api.themoviedb.org/3/movie/102899/videos?api_key=XXX
+        @GET("movie/{id}/videos")
+        Call<Videos> getMovieVideos(
+                @Query("id") String id,
+                @Query("api_key") String api_key);
+
+
     }
 
     // Custom String Converter for Retrofit 2

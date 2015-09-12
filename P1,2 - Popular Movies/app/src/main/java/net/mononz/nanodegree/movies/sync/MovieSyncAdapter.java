@@ -14,7 +14,7 @@ import android.util.Log;
 import net.mononz.nanodegree.movies.Preferences_Manager;
 import net.mononz.nanodegree.movies.R;
 import net.mononz.nanodegree.movies.api.Movies;
-import net.mononz.nanodegree.movies.api.MoviesResult;
+import net.mononz.nanodegree.movies.api.Movie;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.data.Obj_Movie;
 
@@ -105,7 +105,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     // Bulk Insert movies into db
     public void insertDataMovies(Movies movie) {
-        ArrayList<MoviesResult> movies = movie.results;
+        ArrayList<Movie> movies = movie.results;
         ContentValues[] movieValuesArr = new ContentValues[movies.size()];
         for (int i = 0; i < movies.size(); i++) {
             // Build Object from GSON

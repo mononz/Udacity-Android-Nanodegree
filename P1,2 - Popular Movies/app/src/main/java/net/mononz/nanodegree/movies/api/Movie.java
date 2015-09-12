@@ -1,6 +1,6 @@
 package net.mononz.nanodegree.movies.api;
 
-public class MoviesResult {
+public class Movie {
 
     public int id;
     public boolean adult;

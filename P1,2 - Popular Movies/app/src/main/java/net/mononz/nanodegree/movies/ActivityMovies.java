@@ -14,7 +14,7 @@ import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
 public class ActivityMovies extends AppCompatActivity implements FragmentMain.Callbacks {
 
     private boolean mTwoPane;
-    private static final long THRESHOLD_HOURS = 0;
+    private static final long THRESHOLD_HOURS = 6;
     private static final long THRESHOLD_MILLIS = THRESHOLD_HOURS * 60 * 60 * 1000;
 
     public Toolbar main_toolbar;
