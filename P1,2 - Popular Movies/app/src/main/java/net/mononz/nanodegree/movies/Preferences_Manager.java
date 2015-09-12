@@ -30,9 +30,10 @@ public class Preferences_Manager {
     // ---- Sorting ---- //
 
     private static final String SORT_OPTION = "sort_option";
-    public static final int SORT_NAME = 0;
-    public static final int SORT_POPULARITY = 1;
-    public static final int SORT_RATING = 2;
+    public static final int SORT_FAVOURITES = 0;
+    public static final int SORT_NAME = 1;
+    public static final int SORT_POPULARITY = 2;
+    public static final int SORT_RATING = 3;
 
     public void setSortOption(int value) {
         save_to_preferences(main_pref, SORT_OPTION, value);
@@ -42,6 +43,8 @@ public class Preferences_Manager {
     }
     public String getSortOptionString() {
         switch (getSortOption()) {
+            case SORT_FAVOURITES:
+                return "Favourites";
             case SORT_NAME:
                 return "Sorted by Name";
             case SORT_POPULARITY:

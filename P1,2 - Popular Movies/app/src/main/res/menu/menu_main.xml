@@ -6,6 +6,11 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/sort_favourites"
+            android:title="@string/menu_favourites"
+            android:orderInCategory="0"
+            app:showAsAction="never" />
+        <item
             android:id="@+id/sort_name"
             android:title="@string/menu_sort_name"
             android:orderInCategory="1"

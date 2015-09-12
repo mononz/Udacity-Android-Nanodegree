@@ -76,7 +76,7 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
         MovieSyncAdapter.initializeSyncAdapter(this);
 
         Cursor c = getContentResolver().query(MoviesContract.MovieEntry.CONTENT_URI,
-                new String[]{MoviesContract.MovieEntry._ID},
+                new String[]{MoviesContract.MovieEntry.FULL_ID},
                 null, null, null);
 
         Preferences_Manager preferences_manager = new Preferences_Manager(this);

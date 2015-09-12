@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import net.mononz.nanodegree.movies.data.FavouritesContract;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 
 public class FragmentMain extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -104,6 +105,9 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
         inflater.inflate(R.menu.menu_main, menu);
 
         switch (preferences_manager.getSortOption()) {
+            case Preferences_Manager.SORT_FAVOURITES:
+                menu.findItem(R.id.sort_favourites).setChecked(true);
+                break;
             case Preferences_Manager.SORT_NAME:
                 menu.findItem(R.id.sort_name).setChecked(true);
                 break;
@@ -120,25 +124,20 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.sort_favourites:
+                item.setChecked(!item.isChecked());
+                preferences_manager.setSortOption(Preferences_Manager.SORT_FAVOURITES);
+                break;
             case R.id.sort_name:
-                if (item.isChecked())
-                    item.setChecked(false);
-                else
-                    item.setChecked(true);
+                item.setChecked(!item.isChecked());
                 preferences_manager.setSortOption(Preferences_Manager.SORT_NAME);
                 break;
             case R.id.sort_popularity:
-                if (item.isChecked())
-                    item.setChecked(false);
-                else
-                    item.setChecked(true);
+                item.setChecked(!item.isChecked());
                 preferences_manager.setSortOption(Preferences_Manager.SORT_POPULARITY);
                 break;
             case R.id.sort_rating:
-                if (item.isChecked())
-                    item.setChecked(false);
-                else
-                    item.setChecked(true);
+                item.setChecked(!item.isChecked());
                 preferences_manager.setSortOption(Preferences_Manager.SORT_RATING);
                 break;
             default:
@@ -152,6 +151,10 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String sort_option = MoviesContract.MovieEntry.SORT_POPULARITY;
         switch (preferences_manager.getSortOption()) {
+            case Preferences_Manager.SORT_FAVOURITES:
+                return new CursorLoader(getActivity(),
+                        MoviesContract.MovieEntry.CONTENT_URI,
+                        null, FavouritesContract.FavouritesEntry.FULL_ID + " IS NOT NULL", null, null);
             case Preferences_Manager.SORT_NAME:
                 sort_option = MoviesContract.MovieEntry.SORT_TITLE;
                 break;

@@ -31,5 +31,6 @@
     <string name="menu_sort_name">Sort By Name</string>
     <string name="menu_sort_popularity">Sort By Popularity</string>
     <string name="menu_sort_rating">Sort By Rating</string>
+    <string name="menu_favourites">Show Favourites</string>
 
 </resources>

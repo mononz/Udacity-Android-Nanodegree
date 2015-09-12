@@ -3,6 +3,7 @@ package net.mononz.nanodegree.movies;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -167,7 +168,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDetailCursor = data;
         mDetailCursor.moveToFirst();
-        //DatabaseUtils.dumpCursor(data);
+        DatabaseUtils.dumpCursor(data);
 
         int nameIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE);
         ((ActivityMovies) getActivity()).toolbars(mDetailCursor.getString(nameIndex));

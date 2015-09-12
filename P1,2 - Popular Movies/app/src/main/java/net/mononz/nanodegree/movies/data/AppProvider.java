@@ -66,8 +66,10 @@ public class AppProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             // All Movies selected
             case MOVIE:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        MoviesContract.MovieEntry.TABLE_MOVIES,
+                SQLiteQueryBuilder qb0 = new SQLiteQueryBuilder();
+                qb0.setTables(MoviesContract.MovieEntry.TABLE_MOVIES +
+                        " LEFT JOIN " + FavouritesContract.FavouritesEntry.TABLE_FAVOURITES + " ON " + MoviesContract.MovieEntry.FULL_ID + "=" + FavouritesContract.FavouritesEntry.FULL_ID);
+                retCursor = qb0.query(mOpenHelper.getReadableDatabase(),
                         projection,
                         selection, selectionArgs,
                         null, null, sortOrder);
