@@ -204,12 +204,9 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     }
 
     private void showFavouriteIcon() {
-        if (favourite) {
-            menu.findItem(R.id.favourite_yes).setVisible(true);
-            menu.findItem(R.id.favourite_no).setVisible(false);
-        } else {
-            menu.findItem(R.id.favourite_yes).setVisible(false);
-            menu.findItem(R.id.favourite_no).setVisible(true);
+        if (menu != null) {
+            menu.findItem(R.id.favourite_yes).setVisible(favourite);
+            menu.findItem(R.id.favourite_no).setVisible(!favourite);
         }
     }
 
