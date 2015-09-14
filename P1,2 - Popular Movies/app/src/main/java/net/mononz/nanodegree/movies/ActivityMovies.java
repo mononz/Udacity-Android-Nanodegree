@@ -39,10 +39,12 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
             setSupportActionBar(main_toolbar);
         }
 
-        Stetho.initialize(Stetho.newInitializerBuilder(this)
-                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                .build());
+        if (BuildConfig.DEBUG) {
+            Stetho.initialize(Stetho.newInitializerBuilder(this)
+                    .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                    .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                    .build());
+        }
 
         syncData();
     }

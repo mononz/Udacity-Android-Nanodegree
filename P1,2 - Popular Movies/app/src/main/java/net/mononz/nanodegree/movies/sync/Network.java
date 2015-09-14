@@ -1,8 +1,7 @@
 package net.mononz.nanodegree.movies.sync;
 
-import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.MediaType;
@@ -10,9 +9,9 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.ResponseBody;
 
 import net.mononz.nanodegree.movies.api.ErrorCode;
-import net.mononz.nanodegree.movies.api.Movies;
-import net.mononz.nanodegree.movies.api.Reviews;
-import net.mononz.nanodegree.movies.api.Videos;
+import net.mononz.nanodegree.movies.api.movies.Movies;
+import net.mononz.nanodegree.movies.api.reviews.Reviews;
+import net.mononz.nanodegree.movies.api.videos.Videos;
 
 import java.io.IOException;
 
@@ -22,14 +21,17 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 import retrofit.http.GET;
+import retrofit.http.Path;
 import retrofit.http.Query;
 
 public class Network {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
-    private static final String IMAGE_QUALITY = "w342"; // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
-    private static final String IMAGE_URL = "http://image.tmdb.org/t/p/" + IMAGE_QUALITY;
+    // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
+    private static final String IMAGE_QUALITY_HIGH = "w780";
+    private static final String IMAGE_QUALITY_LOW = "w342";
+    private static final String IMAGE_URL = "http://image.tmdb.org/t/p/";
 
 
     Retrofit restAdapter = new Retrofit.Builder()
@@ -53,13 +55,13 @@ public class Network {
         // https://api.themoviedb.org/3/movie/102899/reviews?api_key=XXX
         @GET("movie/{id}/reviews")
         Call<Reviews> getMovieReviews(
-                @Query("id") String id,
+                @Path("id") int id,
                 @Query("api_key") String api_key);
 
         // https://api.themoviedb.org/3/movie/102899/videos?api_key=XXX
         @GET("movie/{id}/videos")
         Call<Videos> getMovieVideos(
-                @Query("id") String id,
+                @Path("id") int id,
                 @Query("api_key") String api_key);
 
 
@@ -80,20 +82,22 @@ public class Network {
     }
 
     // Handle generic error response json from tmdb
-    public static void handleErrorResponse(Context context, Response response) {
+    @Nullable
+    public static String handleErrorResponse(Response response) {
         try {
             Gson gson = new Gson();
             ErrorCode err = gson.fromJson(response.errorBody().string(), ErrorCode.class);
-            Toast.makeText(context, err.status_message, Toast.LENGTH_SHORT).show();
+            return err.status_message;
         } catch (IOException e) {
             Log.e("IOException", e.toString());
+            return null;
         }
     }
 
     // API request for image (banner/poster/etc..) from TMDB
-    public static String getImage(String image_id) {
-        // http://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg
-        return IMAGE_URL + image_id;
+    public static String getImage(boolean highQuality, String image_path) {
+        // http://image.tmdb.org/t/p/w500/xu9zaAevzQ5nnrsXN6JcahLnG4i.jpg
+        return IMAGE_URL + ((highQuality) ? IMAGE_QUALITY_HIGH : IMAGE_QUALITY_LOW) + image_path;
     }
 
 }

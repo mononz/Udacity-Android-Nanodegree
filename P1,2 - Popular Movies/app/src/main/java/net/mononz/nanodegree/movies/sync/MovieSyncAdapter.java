@@ -10,11 +10,12 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import net.mononz.nanodegree.movies.Preferences_Manager;
 import net.mononz.nanodegree.movies.R;
-import net.mononz.nanodegree.movies.api.Movies;
-import net.mononz.nanodegree.movies.api.Movie;
+import net.mononz.nanodegree.movies.api.movies.Movies;
+import net.mononz.nanodegree.movies.api.movies.Movie;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.data.Obj_Movie;
 
@@ -93,7 +94,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
                 if (response.isSuccess()) {
                     insertDataMovies(response.body());
                 } else {
-                    Network.handleErrorResponse(getContext(), response);
+                    String errMsg = Network.handleErrorResponse(response);
+                    if (errMsg != null) Toast.makeText(getContext(), errMsg, Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -153,9 +155,6 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         Preferences_Manager preferences_manager = new Preferences_Manager(getContext());
         preferences_manager.setLastSync(System.currentTimeMillis());
     }
-
-
-    // HELPER FUNCTIONS
 
     // Helper function for storing booleans as integers in db
     private int bool2int(boolean b) {

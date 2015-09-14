@@ -82,7 +82,6 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
-
         switch (preferences_manager.getSortOption()) {
             case Preferences_Manager.SORT_FAVOURITES:
                 menu.findItem(R.id.sort_favourites).setChecked(true);

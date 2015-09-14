@@ -1,4 +1,4 @@
-package net.mononz.nanodegree.movies.api;
+package net.mononz.nanodegree.movies.api.movies;
 
 public class Movie {
 

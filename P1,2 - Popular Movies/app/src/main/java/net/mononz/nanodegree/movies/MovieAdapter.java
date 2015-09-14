@@ -43,7 +43,7 @@ public class MovieAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         int imageIndex = cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER);
         Glide.with(context)
-                .load(Network.getImage(cursor.getString(imageIndex)))
+                .load(Network.getImage(false, cursor.getString(imageIndex)))
                 .centerCrop()
                 .crossFade()
                 .into(viewHolder.imageView);
