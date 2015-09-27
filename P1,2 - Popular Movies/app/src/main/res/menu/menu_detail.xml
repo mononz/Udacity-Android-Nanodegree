@@ -5,17 +5,27 @@
     tools:context=".ActivityMovies">
 
     <item
-        android:id="@+id/favourite_yes"
+        android:id="@+id/sharing"
         android:title="@string/menu_sort_name"
-        android:icon="@drawable/ic_favourite_yes"
+        android:icon="@drawable/ic_share"
         android:orderInCategory="1"
         app:showAsAction="always"
-        android:visible="false" />
+        android:visible="false"
+        tools:visible="true" />
+
+    <item
+        android:id="@+id/favourite_yes"
+        android:title="@string/menu_sort_name"
+        android:icon="@drawable/ic_star_filled"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:visible="false"
+        tools:visible="true" />
 
     <item
         android:id="@+id/favourite_no"
         android:title="@string/menu_sort_name"
-        android:icon="@drawable/ic_favourite_no"
+        android:icon="@drawable/ic_star_empty"
         android:orderInCategory="1"
         app:showAsAction="always"
         android:visible="true" />

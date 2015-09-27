@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -136,6 +137,13 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
             case android.R.id.home:
                 getFragmentManager().popBackStack();
                 break;
+            case R.id.sharing:
+                int nameIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE);
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Check out the awesome " + mDetailCursor.getString(nameIndex) + " trailer at http://www.youtube.com/watch?v=" + videoArrayList.get(0).key);
+                        startActivity(Intent.createChooser(sharingIntent, "Share using"));
+                break;
             case R.id.favourite_yes:
                 getActivity().getContentResolver().delete(
                         FavouritesContract.FavouritesEntry.CONTENT_URI,
@@ -251,6 +259,9 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
                         mCardVideo.setVisibility(View.VISIBLE);
                         videoArrayList = response.body().results;
                         recList.getAdapter().notifyDataSetChanged();
+                        if (menu != null && videoArrayList.size()>0) {
+                            menu.findItem(R.id.sharing).setVisible(true);
+                        }
                     }
                 }
             }
