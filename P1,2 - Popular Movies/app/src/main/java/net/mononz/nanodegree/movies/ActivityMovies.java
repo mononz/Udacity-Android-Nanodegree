@@ -82,17 +82,18 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
         Cursor c = getContentResolver().query(MoviesContract.MovieEntry.CONTENT_URI,
                 new String[]{MoviesContract.MovieEntry.FULL_ID},
                 null, null, null);
-
-        Preferences_Manager preferences_manager = new Preferences_Manager(this);
-        long lastSync = preferences_manager.getLastSync();
-        long nextSync = System.currentTimeMillis() - (lastSync + THRESHOLD_MILLIS);
-        if (nextSync > 0 || c.getCount() == 0) {
-            Log.d("Sync now!", "" + nextSync + "ms overdue");
-            MovieSyncAdapter.syncImmediately(this);
-        } else {
-            Log.d("Sync wait", "" + Math.abs(nextSync) + "ms till next sync");
+        if (c != null) {
+            Preferences_Manager preferences_manager = new Preferences_Manager(this);
+            long lastSync = preferences_manager.getLastSync();
+            long nextSync = System.currentTimeMillis() - (lastSync + THRESHOLD_MILLIS);
+            if (nextSync > 0 || c.getCount() == 0) {
+                Log.d("Sync now!", "" + nextSync + "ms overdue");
+                MovieSyncAdapter.syncImmediately(this);
+            } else {
+                Log.d("Sync wait", "" + Math.abs(nextSync) + "ms till next sync");
+            }
+            c.close();
         }
-        c.close();
     }
 
 }

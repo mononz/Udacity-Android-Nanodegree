@@ -43,14 +43,6 @@ import retrofit.Response;
 
 public class FragmentDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String LOG_TAG = FragmentDetail.class.getSimpleName();
-
-    private Cursor mDetailCursor;
-    private static final int CURSOR_LOADER_ID = 0;
-
-    private int mMovieId;
-    private String TAG_MOVIE_ID = "mMovieId";
-
     @InjectView(R.id.poster) protected ImageView mPoster;
     @InjectView(R.id.popularity) protected TextView mPopularity;
     @InjectView(R.id.rating) protected TextView mRating;
@@ -61,6 +53,14 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     @InjectView(R.id.card_review) protected CardView mCardReview;
     @InjectView(R.id.review) protected TextView mReview;
     @InjectView(R.id.more_reviews) protected TextView mMoreReviews;
+
+    private static final String LOG_TAG = FragmentDetail.class.getSimpleName();
+
+    private Cursor mDetailCursor;
+    private static final int CURSOR_LOADER_ID = 0;
+
+    private int mMovieId;
+    private String TAG_MOVIE_ID = "mMovieId";
 
     private boolean favourite;
     private ArrayList<Video> videoArrayList = new ArrayList<>();
@@ -97,11 +97,11 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
             getLoaderManager().initLoader(CURSOR_LOADER_ID, args, FragmentDetail.this);
         }
 
+        Adapter_Video adapter = new Adapter_Video();
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recList.setHasFixedSize(true);
         recList.setLayoutManager(llm);
-        Adapter_ShowList adapter = new Adapter_ShowList();
         recList.setAdapter(adapter);
 
         mMoreReviews.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +207,8 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
 
         int ratingAverageIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE);
         int ratingCountIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_VOTE_COUNT);
-        mRating.setText("" + mDetailCursor.getDouble(ratingAverageIndex) + " (" + mDetailCursor.getInt(ratingCountIndex) + ")");
+        String str = "" + mDetailCursor.getDouble(ratingAverageIndex) + " (" + mDetailCursor.getInt(ratingCountIndex) + ")";
+        mRating.setText(str);
 
         int plotIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_OVERVIEW);
         mPlot.setText(mDetailCursor.getString(plotIndex));
@@ -271,10 +272,10 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
                         mCardReview.setVisibility(View.GONE);
                     } else {
                         mCardReview.setVisibility(View.VISIBLE);
-                        String str = response.body().results.get(0).content;
-                        if (str.length()> 256)
-                            mReview.setText(str.substring(0, 256) + "...");
-                        mMoreReviews.setVisibility(View.VISIBLE);
+                        mReview.setText(response.body().results.get(0).content);
+                        if (response.body().results.size() > 1) {
+                            mMoreReviews.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }
@@ -285,9 +286,9 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         });
     }
 
-    public class Adapter_ShowList extends RecyclerView.Adapter<Adapter_ShowList.ShowViewHolder> {
+    public class Adapter_Video extends RecyclerView.Adapter<Adapter_Video.ShowViewHolder> {
 
-        public Adapter_ShowList() { }
+        public Adapter_Video() { }
 
         @Override
         public int getItemCount() {
@@ -298,7 +299,10 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         public void onBindViewHolder(final ShowViewHolder view_holder, final int position) {
             final Video obj = videoArrayList.get(position);
             view_holder.vType.setText(obj.type);
-            view_holder.vName.setText(obj.name);
+            String nme = obj.name;
+            if (nme.length() > 20)
+                nme = nme.substring(0, 20) + "...";
+            view_holder.vName.setText(nme);
             view_holder.vLink.setText(obj.site);
             view_holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override

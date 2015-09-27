@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 public class AppProvider extends ContentProvider {
@@ -44,7 +46,7 @@ public class AppProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri){
+    public String getType(@Nullable Uri uri){
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case MOVIE:
@@ -61,7 +63,7 @@ public class AppProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
+    public Cursor query(@Nullable Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
             // All Movies selected
@@ -135,7 +137,7 @@ public class AppProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@Nullable Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int numDeleted;
@@ -157,7 +159,7 @@ public class AppProvider extends ContentProvider {
     }
 
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] values) {
+    public int bulkInsert(@Nullable Uri uri, @NonNull ContentValues[] values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         int numInserted;
@@ -197,7 +199,7 @@ public class AppProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    public int update(@Nullable Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int numUpdated;
         if (contentValues == null) {
