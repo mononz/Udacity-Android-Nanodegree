@@ -65,6 +65,7 @@ public class AppProvider extends ContentProvider {
     @Override
     public Cursor query(@Nullable Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
         Cursor retCursor;
+        Log.d("query", uri.toString());
         switch (sUriMatcher.match(uri)) {
             // All Movies selected
             case MOVIE:
@@ -84,26 +85,7 @@ public class AppProvider extends ContentProvider {
                 retCursor = qb1.query(mOpenHelper.getReadableDatabase(),
                         projection,
                         MoviesContract.MovieEntry.FULL_ID + "=?",
-                        new String[] {String.valueOf(ContentUris.parseId(uri))},
-                        null, null, sortOrder);
-                break;
-            // All Favourites added
-            case FAVOURITE:
-                SQLiteQueryBuilder qb2 = new SQLiteQueryBuilder();
-                qb2.setTables(MoviesContract.MovieEntry.TABLE_MOVIES +
-                        " LEFT JOIN " + FavouritesContract.FavouritesEntry.TABLE_FAVOURITES + " ON " + MoviesContract.MovieEntry.FULL_ID + "=" + FavouritesContract.FavouritesEntry.FULL_ID);
-                retCursor = qb2.query(mOpenHelper.getReadableDatabase(),
-                        projection,
-                        selection, selectionArgs,
-                        null, null, sortOrder);
-                break;
-            // Individual favourite based on Id selected
-            case FAVOURITE_WITH_ID:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        FavouritesContract.FavouritesEntry.TABLE_FAVOURITES,
-                        projection,
-                        FavouritesContract.FavouritesEntry._ID + "=?",
-                        new String[] {String.valueOf(ContentUris.parseId(uri))},
+                        new String[]{String.valueOf(ContentUris.parseId(uri))},
                         null, null, sortOrder);
                 break;
             default:
@@ -132,7 +114,7 @@ public class AppProvider extends ContentProvider {
             }
         }
         getContext().getContentResolver().notifyChange(uri, null);
-        Log.d("Insert", "notify changed");
+        Log.d("Insert", "notify changed: " + uri.toString());
         return returnUri;
     }
 
@@ -152,7 +134,7 @@ public class AppProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         if (numDeleted > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            //getContext().getContentResolver().notifyChange(MoviesContract.MovieEntry.CONTENT_URI, null);
             Log.d("Delete", "notify changed (" + numDeleted + ")");
         }
         return numDeleted;

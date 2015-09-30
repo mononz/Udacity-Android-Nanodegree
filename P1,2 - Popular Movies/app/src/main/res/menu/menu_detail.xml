@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/sharing"
-        android:title="@string/menu_sort_name"
+        android:title="Share Trailer"
         android:icon="@drawable/ic_share"
         android:orderInCategory="1"
         app:showAsAction="always"
@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/favourite_yes"
-        android:title="@string/menu_sort_name"
+        android:title="Remove from Favourites"
         android:icon="@drawable/ic_star_filled"
         android:orderInCategory="1"
         app:showAsAction="always"
@@ -24,7 +24,7 @@
 
     <item
         android:id="@+id/favourite_no"
-        android:title="@string/menu_sort_name"
+        android:title="Add to Favourites"
         android:icon="@drawable/ic_star_empty"
         android:orderInCategory="1"
         app:showAsAction="always"

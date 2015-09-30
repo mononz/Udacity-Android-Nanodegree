@@ -276,17 +276,27 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         Call<Reviews> reviewsCall = new Network().service.getMovieReviews(mMovieId, getString(R.string.tmdb_api_key));
         reviewsCall.enqueue(new Callback<Reviews>() {
             @Override
-            public void onResponse(Response<Reviews> response) {
+            public void onResponse(final Response<Reviews> response) {
                 Log.d("onResponse", "" + response.code() + " - " + response.message());
                 if (response.isSuccess()) {
                     if (response.body().results.size() == 0) {
                         mCardReview.setVisibility(View.GONE);
                     } else {
                         mCardReview.setVisibility(View.VISIBLE);
-                        mReview.setText(response.body().results.get(0).content);
-                        if (response.body().results.size() > 1) {
+                        String str = response.body().results.get(0).content;
+                        if (response.body().results.size() > 1 || str.length()>256) {
                             mMoreReviews.setVisibility(View.VISIBLE);
                         }
+                        if (str.length()>256) {
+                            str = str.substring(0, 256) + "...";
+                        }
+                        mReview.setText(str);
+                        mReview.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(response.body().results.get(0).url)));
+                            }
+                        });
                     }
                 }
             }
