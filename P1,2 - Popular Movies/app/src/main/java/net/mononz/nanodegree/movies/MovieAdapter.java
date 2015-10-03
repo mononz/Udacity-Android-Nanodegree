@@ -20,7 +20,7 @@ public class MovieAdapter extends CursorAdapter {
         public final ImageView imageView;
 
         public ViewHolder(View view){
-            imageView = (ImageView) view.findViewById(R.id.flavor_image);
+            imageView = (ImageView) view.findViewById(R.id.poster);
         }
     }
 

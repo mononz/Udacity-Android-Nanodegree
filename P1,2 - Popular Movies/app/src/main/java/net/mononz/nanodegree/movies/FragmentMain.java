@@ -72,6 +72,7 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
                 int uriIndex = c.getColumnIndex(MoviesContract.MovieEntry._ID);
                 int uriId = c.getInt(uriIndex);
                 mCallbacks.onItemSelected(uriId);
+                mGridView.setItemChecked(position, true);
             }
         });
 

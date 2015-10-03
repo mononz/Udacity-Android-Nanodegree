@@ -9,9 +9,11 @@
         android:layout_height="match_parent"
         android:columnWidth="150dp"
         android:numColumns="auto_fit"
+        android:choiceMode="singleChoice"
         android:verticalSpacing="0dp"
         android:horizontalSpacing="0dp"
         android:stretchMode="columnWidth"
-        android:id="@+id/flavors_grid" />
+        android:id="@+id/flavors_grid"
+        android:scrollbars="none" />
 
 </LinearLayout>

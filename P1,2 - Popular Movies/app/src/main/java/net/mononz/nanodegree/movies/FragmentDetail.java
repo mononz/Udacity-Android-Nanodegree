@@ -208,6 +208,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         int posterIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_BACKDROP);
         Glide.with(this)
                 .load(Network.getImage(true, mDetailCursor.getString(posterIndex)))
+                .placeholder(R.drawable.banner_loading)
                 .into(mPoster);
 
         int popularityIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POPULARITY);
