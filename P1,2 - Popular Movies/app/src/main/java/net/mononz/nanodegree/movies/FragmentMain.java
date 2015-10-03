@@ -18,7 +18,12 @@ import android.widget.GridView;
 import net.mononz.nanodegree.movies.data.FavouritesContract;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class FragmentMain extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    @InjectView(R.id.flavors_grid) protected GridView mGridView;
 
     private MovieAdapter mFlavorAdapter;
     private Preferences_Manager preferences_manager;
@@ -58,10 +63,11 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.inject(this, rootView);
+
         mCallbacks = (Callbacks) getActivity();
 
         mFlavorAdapter = new MovieAdapter(getActivity(), null, 0);
-        final GridView mGridView = (GridView) rootView.findViewById(R.id.flavors_grid);
         mGridView.setAdapter(mFlavorAdapter);
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

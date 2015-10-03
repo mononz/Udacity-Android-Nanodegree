@@ -11,7 +11,7 @@ import com.facebook.stetho.Stetho;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
 
-public class ActivityMovies extends AppCompatActivity implements FragmentMain.Callbacks {
+public class ActivityMovies extends AppCompatActivity implements FragmentMain.Callbacks,FragmentDetail.Callbacks {
 
     private boolean mTwoPane;
     private static final long THRESHOLD_HOURS = 6;
@@ -63,6 +63,22 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
                     .commit();
         }
     }
+
+    @Override
+    public void onReviewSelected(int id) {
+        FragmentReviews fragmentReviews = FragmentReviews.newInstance(id);
+        if (mTwoPane) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.detail_container, fragmentReviews)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, fragmentReviews)
+                    .addToBackStack("reviews")
+                    .commit();
+        }
+    }
+
     @Override
     public void onUpdateToolbar(String str) {
         main_toolbar.setSubtitle(str);

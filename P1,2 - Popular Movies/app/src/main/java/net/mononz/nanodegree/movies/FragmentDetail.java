@@ -59,14 +59,28 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
 
     private Cursor mDetailCursor;
     private static final int CURSOR_LOADER_ID = 0;
-
     private int mMovieId;
     private String TAG_MOVIE_ID = "mMovieId";
-
     private boolean favourite;
     private ArrayList<Video> videoArrayList = new ArrayList<>();
 
     private Menu menu;
+
+    private Callbacks mCallbacks = sDummyCallbacks;
+    public interface Callbacks {
+        void onReviewSelected(int id);
+    }
+
+    private static Callbacks sDummyCallbacks = new Callbacks() {
+        @Override
+        public void onReviewSelected(int id) {}
+    };
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = sDummyCallbacks;
+    }
 
     public static FragmentDetail newInstance(int movie_id) {
         FragmentDetail fragment = new FragmentDetail();
@@ -89,6 +103,8 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.inject(this, rootView);
 
+        mCallbacks = (Callbacks) getActivity();
+
         if (savedInstanceState != null) {
             // Restore last state
             mMovieId = savedInstanceState.getInt(TAG_MOVIE_ID);
@@ -108,7 +124,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         mMoreReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_SHORT).show();
+                mCallbacks.onReviewSelected(mMovieId);
             }
         });
 
@@ -170,12 +186,6 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(TAG_MOVIE_ID, mMovieId);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
     }
 
     @Override
@@ -285,13 +295,13 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
                     } else {
                         mCardReview.setVisibility(View.VISIBLE);
                         String str = response.body().results.get(0).content;
-                        if (response.body().results.size() > 1 || str.length()>256) {
+                        if (response.body().results.size()>1 || str.length()>256) {
                             mMoreReviews.setVisibility(View.VISIBLE);
                         }
                         if (str.length()>256) {
                             str = str.substring(0, 256) + "...";
                         }
-                        mReview.setText(str);
+                        mReview.setText(Html.fromHtml(str));
                         mReview.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -330,7 +340,6 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + obj.key)));
-                    //mCallbacks.onItemSelected(obj.id);
                 }
             });
         }
@@ -344,20 +353,16 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         public class ShowViewHolder extends RecyclerView.ViewHolder {
 
             protected View mView;
-            protected TextView vType;
-            protected TextView vName;
-            protected TextView vLink;
+            @InjectView(R.id.type) protected TextView vType;
+            @InjectView(R.id.name) protected TextView vName;
+            @InjectView(R.id.link) protected TextView vLink;
 
             public ShowViewHolder(View v) {
                 super(v);
                 mView = v;
-                vType  = (TextView) v.findViewById(R.id.type);
-                vName  = (TextView) v.findViewById(R.id.name);
-                vLink  = (TextView) v.findViewById(R.id.link);
+                ButterKnife.inject(this, v);
             }
-
         }
 
     }
-
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="300dp"
     xmlns:tools="http://schemas.android.com/tools">
@@ -9,8 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/poster"
-        android:padding="2dp"
-        android:background="@drawable/selector_grid"
         tools:src="@drawable/ant_man" />
 
-</FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/grid_border"
+        android:background="@drawable/selector_grid"
+        android:id="@+id/view" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/grid_border"
+        android:background="@drawable/selector_grid"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/view2" />
+
+    <View
+        android:layout_width="@dimen/grid_border"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_grid"
+        android:layout_below="@+id/view"
+        android:layout_above="@+id/view2" />
+
+    <View
+        android:layout_width="@dimen/grid_border"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_grid"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/view"
+        android:layout_above="@+id/view2" />
+
+</RelativeLayout>
