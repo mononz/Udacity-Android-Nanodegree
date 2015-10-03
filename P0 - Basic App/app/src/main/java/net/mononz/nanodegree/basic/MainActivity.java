@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = getPackageManager().getLaunchIntentForPackage("net.mononz.nanodegree.movies");
                     startActivity(intent);
                 } catch (Exception e) {
-                    Toast.makeText(this, "Please install my 'Popular Movies App'", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "'Popular Movies App' Not Installed", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:

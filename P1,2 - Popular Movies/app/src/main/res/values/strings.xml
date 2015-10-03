@@ -28,8 +28,8 @@
     <string name="movies_released">Released</string>
     <string name="movies_plot">Plot Summary</string>
 
-    <string name="menu_sort_popularity">Sort By Popularity</string>
-    <string name="menu_sort_rating">Sort By Rating</string>
-    <string name="menu_favourites">Show Favourites</string>
+    <string name="menu_popular">Most Popular</string>
+    <string name="menu_rating">Highest Rated</string>
+    <string name="menu_favourites">Favourites</string>
 
 </resources>
