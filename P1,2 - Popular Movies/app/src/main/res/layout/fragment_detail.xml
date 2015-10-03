@@ -23,14 +23,14 @@
         <android.support.v7.widget.CardView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_margin="@dimen/std_padding">
 
             <android.support.v7.widget.GridLayout
                 android:id="@+id/grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:columnCount="3"
-                android:padding="5dp" >
+                android:padding="@dimen/std_padding" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -96,20 +96,19 @@
         <android.support.v7.widget.CardView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_margin="@dimen/std_padding">
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="@dimen/std_padding">
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/movies_plot"
                     style="@style/GeneralTextBold"
-                    android:focusable="false"
                     android:gravity="center_horizontal" />
 
                 <TextView
@@ -127,7 +126,7 @@
             android:id="@+id/card_video"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/std_padding"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -135,20 +134,20 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="@dimen/std_padding">
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Videos"
+                    android:text="@string/movies_videos"
                     style="@style/GeneralTextBold"
-                    android:focusable="false"
                     android:gravity="center_horizontal" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/video"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="80dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             </LinearLayout>
@@ -159,7 +158,7 @@
             android:id="@+id/card_review"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/std_padding"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -167,14 +166,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="@dimen/std_padding">
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Reviews"
+                    android:text="@string/movies_reviews"
                     style="@style/GeneralTextBold"
-                    android:focusable="false"
                     android:gravity="center_horizontal" />
 
                 <TextView
@@ -188,7 +186,7 @@
                     android:id="@+id/more_reviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="More Reviews"
+                    android:text="@string/movies_reviews_more"
                     style="@style/GeneralText"
                     android:layout_gravity="end"
                     android:textColor="@drawable/button_text_color"/>

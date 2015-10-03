@@ -27,6 +27,9 @@
     <string name="movies_rating">Rating</string>
     <string name="movies_released">Released</string>
     <string name="movies_plot">Plot Summary</string>
+    <string name="movies_videos">Videos</string>
+    <string name="movies_reviews">Reviews</string>
+    <string name="movies_reviews_more">More Reviews</string>
 
     <string name="menu_popular">Most Popular</string>
     <string name="menu_rating">Highest Rated</string>

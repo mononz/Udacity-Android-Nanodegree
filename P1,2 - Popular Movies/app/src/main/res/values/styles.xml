@@ -17,7 +17,7 @@
 
     <!-- Set Custom Icon for Overflow Button in ActionBar -->
     <style name="OverflowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_sort</item>
+        <item name="android:src">@drawable/ic_more_vert_24dp</item>
     </style>
 
     <style name="ToolbarStyle">
