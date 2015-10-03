@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -61,10 +60,11 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     private static final int CURSOR_LOADER_ID = 0;
     private int mMovieId;
     private String TAG_MOVIE_ID = "mMovieId";
-    private boolean favourite;
-    private ArrayList<Video> videoArrayList = new ArrayList<>();
 
-    private Menu menu = null;
+    private boolean favourite = false;
+    private boolean sharing = false;
+
+    private ArrayList<Video> videoArrayList = new ArrayList<>();
 
     private Callbacks mCallbacks = sDummyCallbacks;
     public interface Callbacks {
@@ -144,7 +144,9 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        this.menu = menu;
+        menu.findItem(R.id.favourite_yes).setVisible(favourite);
+        menu.findItem(R.id.favourite_no).setVisible(!favourite);
+        menu.findItem(R.id.sharing).setVisible(sharing);
     }
 
     @Override
@@ -166,7 +168,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
                         FavouritesContract.FavouritesEntry._ID + "=?",
                         new String[]{String.valueOf(mMovieId)});
                 favourite = !favourite;
-                showFavouriteIcon();
+                getActivity().invalidateOptionsMenu();
                 break;
             case R.id.favourite_no:
                 ContentValues values = new ContentValues();
@@ -174,7 +176,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
                 values.put(FavouritesContract.FavouritesEntry.COLUMN_DATE_CREATED, System.currentTimeMillis());
                 getActivity().getContentResolver().insert(FavouritesContract.FavouritesEntry.CONTENT_URI, values);
                 favourite = !favourite;
-                showFavouriteIcon();
+                getActivity().invalidateOptionsMenu();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -237,8 +239,8 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
 
         int createdDateIndex = mDetailCursor.getColumnIndex(FavouritesContract.FavouritesEntry.COLUMN_DATE_CREATED);
         favourite = !mDetailCursor.isNull(createdDateIndex);
+        getActivity().invalidateOptionsMenu();
 
-        showFavouriteIcon();
         getVideos();
         getReviews();
 
@@ -248,13 +250,6 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
         mDetailCursor = null;
-    }
-
-    private void showFavouriteIcon() {
-        if (menu != null) {
-            menu.findItem(R.id.favourite_yes).setVisible(favourite);
-            menu.findItem(R.id.favourite_no).setVisible(!favourite);
-        }
     }
 
     private void getVideos() {
@@ -270,8 +265,13 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
                         mCardVideo.setVisibility(View.VISIBLE);
                         videoArrayList = response.body().results;
                         recList.getAdapter().notifyDataSetChanged();
-                        if (menu != null && videoArrayList.size()>0) {
-                            menu.findItem(R.id.sharing).setVisible(true);
+                        if (videoArrayList.size()>0) {
+                            sharing = true;
+                            try {
+                                getActivity().invalidateOptionsMenu();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
