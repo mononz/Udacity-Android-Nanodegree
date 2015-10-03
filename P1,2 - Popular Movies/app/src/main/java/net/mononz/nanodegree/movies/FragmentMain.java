@@ -86,9 +86,6 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
             case Preferences_Manager.SORT_FAVOURITES:
                 menu.findItem(R.id.sort_favourites).setChecked(true);
                 break;
-            case Preferences_Manager.SORT_NAME:
-                menu.findItem(R.id.sort_name).setChecked(true);
-                break;
             case Preferences_Manager.SORT_POPULARITY:
                 menu.findItem(R.id.sort_popularity).setChecked(true);
                 break;
@@ -105,10 +102,6 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
             case R.id.sort_favourites:
                 item.setChecked(!item.isChecked());
                 preferences_manager.setSortOption(Preferences_Manager.SORT_FAVOURITES);
-                break;
-            case R.id.sort_name:
-                item.setChecked(!item.isChecked());
-                preferences_manager.setSortOption(Preferences_Manager.SORT_NAME);
                 break;
             case R.id.sort_popularity:
                 item.setChecked(!item.isChecked());
@@ -134,14 +127,11 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
                 selection = FavouritesContract.FavouritesEntry.FULL_ID;
                 sort_option = MoviesContract.MovieEntry.SORT_TITLE;
                 break;
-            case Preferences_Manager.SORT_NAME:
-                sort_option = MoviesContract.MovieEntry.SORT_TITLE;
-                break;
             case Preferences_Manager.SORT_POPULARITY:
-                sort_option = MoviesContract.MovieEntry.SORT_POPULARITY;
+                sort_option = MoviesContract.MovieEntry.SORT_POPULARITY + " LIMIT 20";
                 break;
             case Preferences_Manager.SORT_RATING:
-                sort_option = MoviesContract.MovieEntry.SORT_RATING;
+                sort_option = MoviesContract.MovieEntry.SORT_RATING + " LIMIT 20";
                 break;
         }
         mCallbacks.onUpdateToolbar(preferences_manager.getSortOptionString());

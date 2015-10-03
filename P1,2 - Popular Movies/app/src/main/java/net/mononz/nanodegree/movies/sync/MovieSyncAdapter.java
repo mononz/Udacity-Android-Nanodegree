@@ -19,10 +19,10 @@ import net.mononz.nanodegree.movies.api.movies.Movie;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.data.Obj_Movie;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit.Call;
-import retrofit.Callback;
 import retrofit.Response;
 
 public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
@@ -36,7 +36,9 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "Starting sync");
-        getPopularMovies();
+        // Chained synchronous calls
+        getPopularMovies("popularity.desc", true);
+        getPopularMovies("vote_average.desc", false);
     }
 
     /**
@@ -84,29 +86,26 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     // API request for Top 20 movies from TMDB
-    public void getPopularMovies() {
-        Log.d(LOG_TAG, "getPopularMovies");
-        Call<Movies> call = new Network().service.getMovies(getContext().getString(R.string.tmdb_api_key), "popularity.desc");
-        call.enqueue(new Callback<Movies>() {
-            @Override
-            public void onResponse(Response<Movies> response) {
-                Log.d("onResponse", "" + response.code() + " " + response.message());
-                if (response.isSuccess()) {
-                    insertDataMovies(response.body());
-                } else {
-                    String errMsg = Network.handleErrorResponse(response);
-                    if (errMsg != null) Toast.makeText(getContext(), errMsg, Toast.LENGTH_SHORT).show();
-                }
+    public void getPopularMovies(String sort, boolean del) {
+        Log.d(LOG_TAG, "getPopularMovies: " + sort);
+        // Synchronous call to ease network spam and less chance of conflicts
+        Call<Movies> call = new Network().service.getMovies(getContext().getString(R.string.tmdb_api_key), sort);
+        try {
+            Response<Movies> response = call.execute();
+            if (response.isSuccess()) {
+                insertDataMovies(response.body(), del);
+            } else {
+                String errMsg = Network.handleErrorResponse(response);
+                if (errMsg != null) Toast.makeText(getContext(), errMsg, Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void onFailure(Throwable t) {
-                Log.e(LOG_TAG, t.toString());
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+
     // Bulk Insert movies into db
-    public void insertDataMovies(Movies movie) {
+    public void insertDataMovies(Movies movie, boolean del) {
         ArrayList<Movie> movies = movie.results;
         ContentValues[] movieValuesArr = new ContentValues[movies.size()];
         for (int i = 0; i < movies.size(); i++) {
@@ -146,8 +145,11 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         }
         Log.d(LOG_TAG, "NumMovies " + movieValuesArr.length);
 
-        // New content values -> Drop the old records and bulk insert new movies
-        getContext().getContentResolver().delete(MoviesContract.MovieEntry.CONTENT_URI, null, null);
+        // New content values -> Drop the old records
+        if (del) {
+            getContext().getContentResolver().delete(MoviesContract.MovieEntry.CONTENT_URI, null, null);
+        }
+        // Bulk insert new movies
         getContext().getContentResolver().bulkInsert(MoviesContract.MovieEntry.CONTENT_URI, movieValuesArr);
         Log.d(LOG_TAG, "Sync completed + movies updated");
 
