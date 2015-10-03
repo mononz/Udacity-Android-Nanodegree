@@ -35,4 +35,8 @@
     <string name="menu_rating">Highest Rated</string>
     <string name="menu_favourites">Favourites</string>
 
+    <string name="menu_share">Share Trailer</string>
+    <string name="menu_fav_add">Remove from Favourites</string>
+    <string name="menu_fav_rem">Add to Favourites</string>
+
 </resources>

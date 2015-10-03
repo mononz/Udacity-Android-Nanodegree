@@ -11,28 +11,31 @@ import com.facebook.stetho.Stetho;
 import net.mononz.nanodegree.movies.data.MoviesContract;
 import net.mononz.nanodegree.movies.sync.MovieSyncAdapter;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.Optional;
+
 public class ActivityMovies extends AppCompatActivity implements FragmentMain.Callbacks,FragmentDetail.Callbacks {
+
+    @InjectView(R.id.main_toolbar) protected Toolbar main_toolbar;
+    @Optional @InjectView(R.id.detail_toolbar) protected Toolbar detail_toolbar;
 
     private boolean mTwoPane;
     private static final long THRESHOLD_HOURS = 6;
     private static final long THRESHOLD_MILLIS = THRESHOLD_HOURS * 60 * 60 * 1000;
 
-    public Toolbar main_toolbar;
-    public Toolbar detail_toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
+        ButterKnife.inject(this);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, new FragmentMain())
                 .commit();
 
-        main_toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         if (findViewById(R.id.detail_container) != null) {
             mTwoPane = true;
-            detail_toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
             setSupportActionBar(detail_toolbar);
             main_toolbar.setTitle(getString(R.string.app_name));
         } else {
@@ -45,7 +48,6 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
                     .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                     .build());
         }
-
         syncData();
     }
 
@@ -74,7 +76,7 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
         } else {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_container, fragmentReviews)
-                    .addToBackStack("reviews")
+                    .addToBackStack("review")
                     .commit();
         }
     }
@@ -111,5 +113,4 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
             c.close();
         }
     }
-
 }

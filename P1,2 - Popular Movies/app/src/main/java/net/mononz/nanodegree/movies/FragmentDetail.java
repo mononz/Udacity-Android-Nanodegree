@@ -64,7 +64,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     private boolean favourite;
     private ArrayList<Video> videoArrayList = new ArrayList<>();
 
-    private Menu menu;
+    private Menu menu = null;
 
     private Callbacks mCallbacks = sDummyCallbacks;
     public interface Callbacks {
