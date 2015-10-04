@@ -69,11 +69,14 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
     private Callbacks mCallbacks = sDummyCallbacks;
     public interface Callbacks {
         void onReviewSelected(int id);
+        void onReviewToolbar(String str);
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
         public void onReviewSelected(int id) {}
+        @Override
+        public void onReviewToolbar(String str) {}
     };
 
     @Override
@@ -215,7 +218,7 @@ public class FragmentDetail extends Fragment implements LoaderManager.LoaderCall
         //DatabaseUtils.dumpCursor(data);
 
         int nameIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE);
-        ((ActivityMovies) getActivity()).toolbars(mDetailCursor.getString(nameIndex));
+        mCallbacks.onReviewToolbar(mDetailCursor.getString(nameIndex));
 
         int posterIndex = mDetailCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_BACKDROP);
         Glide.with(this)

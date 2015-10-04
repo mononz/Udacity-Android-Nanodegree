@@ -87,6 +87,12 @@ public class FragmentMain extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mCallbacks.onUpdateToolbar(preferences_manager.getSortOptionString());
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
         switch (preferences_manager.getSortOption()) {

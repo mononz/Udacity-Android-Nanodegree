@@ -37,7 +37,7 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
         if (findViewById(R.id.detail_container) != null) {
             mTwoPane = true;
             setSupportActionBar(detail_toolbar);
-            main_toolbar.setTitle(getString(R.string.app_name));
+            main_toolbar.setTitle("");
         } else {
             setSupportActionBar(main_toolbar);
         }
@@ -69,29 +69,31 @@ public class ActivityMovies extends AppCompatActivity implements FragmentMain.Ca
     @Override
     public void onReviewSelected(int id) {
         FragmentReviews fragmentReviews = FragmentReviews.newInstance(id);
+        int container = R.id.main_container;
         if (mTwoPane) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.detail_container, fragmentReviews)
-                    .commit();
+            container = R.id.detail_container;
+        }
+        getSupportFragmentManager().beginTransaction()
+                .replace(container, fragmentReviews)
+                .addToBackStack("review")
+                .commit();
+    }
+
+    @Override
+    public void onReviewToolbar(String str) {
+        if (mTwoPane) {
+            detail_toolbar.setTitle(str);
+            detail_toolbar.setSubtitle(null);
         } else {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, fragmentReviews)
-                    .addToBackStack("review")
-                    .commit();
+            main_toolbar.setTitle(str);
+            main_toolbar.setSubtitle(null);
         }
     }
 
     @Override
-    public void onUpdateToolbar(String str) {
-        main_toolbar.setSubtitle(str);
-    }
-
-    public void toolbars(String str) {
-        if (mTwoPane) {
-            detail_toolbar.setTitle(str);
-        } else {
-            main_toolbar.setTitle(str);
-        }
+    public void onUpdateToolbar(String sub) {
+        main_toolbar.setTitle(getString(R.string.app_name));
+        main_toolbar.setSubtitle(sub);
     }
 
     private void syncData() {
