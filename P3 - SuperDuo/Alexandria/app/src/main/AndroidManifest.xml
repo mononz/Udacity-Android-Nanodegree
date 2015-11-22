@@ -48,7 +48,7 @@
             android:exported="false" />
 
         <activity android:name=".barcode_reader.BarcodeCaptureActivity"
-            android:label="Read Barcode"/>
+            android:label="@string/read_barcode"/>
 
     </application>
 

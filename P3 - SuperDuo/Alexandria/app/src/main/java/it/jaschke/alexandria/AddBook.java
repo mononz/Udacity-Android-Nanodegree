@@ -143,12 +143,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     ean.setText(barcode.displayValue);
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
-                } else {
-                    Toast.makeText(getActivity(), "Could not Grab Barcode", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "No barcode captured, intent data is null");
                 }
             } else {
-                Toast.makeText(getActivity(), "Could not Grab Barcode*", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.no_barcode), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "No barcode captured, intent data is null*");
             }
         }
