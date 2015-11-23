@@ -29,11 +29,15 @@
             android:name=".AboutActivity"
             android:label="About"
             android:parentActivityName=".MainActivity" >
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="barqsoft.footballscores.MainActivity" />
+
         </activity>
+
         <service android:name=".service.myFetchService" />
+
     </application>
 
 </manifest>
