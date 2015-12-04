@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Football Scores</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="test_text">Test</string>
     <string name="today">Today</string>
@@ -32,7 +31,11 @@
 
         During the off season, fake data will be added to the app.
     </string>
-    <string name="widget_text">This is a widget probably.</string>
+
+
+    <string name="title_widget_detail">Football Scores Detail</string>
+    <string name="empty_widget_list">No Football Scores Available</string>
+
 
     <!-- ADD API KEY BELOW AND UNCOMMENT -->
     <!--<string name="api_key" translatable="false">e89e07b5a6624cf6a54b3c8ebd346a54</string>-->
