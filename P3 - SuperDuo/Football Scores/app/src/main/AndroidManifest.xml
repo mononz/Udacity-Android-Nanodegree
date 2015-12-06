@@ -5,11 +5,6 @@
     <uses-permission
         android:name="android.permission.INTERNET" />
 
-    <!-- Permissions required by the sync adapter -->
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-
     <!-- Permissions required to make our UI more friendly -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -37,10 +32,13 @@
             android:name=".AboutActivity"
             android:label="About"
             android:parentActivityName=".MainActivity" >
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="barqsoft.footballscores.MainActivity" />
+
         </activity>
+
         <service android:name=".service.myFetchService" />
 
         <!-- Detail Widget -->

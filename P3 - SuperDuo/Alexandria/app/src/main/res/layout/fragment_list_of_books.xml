@@ -33,7 +33,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"/>
 
-    <ListView android:id="@+id/listOfBooks"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
@@ -46,6 +46,20 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_toRightOf="@id/searchButton"
-        android:layout_toEndOf="@id/searchButton"/>
+        android:layout_toEndOf="@id/searchButton">
+
+        <ListView
+            android:id="@+id/listOfBooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No Results"
+            android:gravity="center_vertical|center_horizontal" />
+
+    </FrameLayout>
 
 </RelativeLayout>

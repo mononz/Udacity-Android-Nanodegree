@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,8 +93,14 @@ public class BookService extends IntentService {
 
         bookEntry.close();
 
-        LongOperation longop = new LongOperation(ean);
-        longop.execute();
+        if (MainActivity.isNetworkAvailable(this)) {
+            Log.d(LOG_TAG, "Proceeeed");
+            LongOperation longop = new LongOperation(ean);
+            longop.execute();
+        } else {
+            Log.d(LOG_TAG, "No net fool!");
+            Toast.makeText(this, "No net fool!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private class LongOperation extends AsyncTask<String, Void, String> {
@@ -163,7 +170,15 @@ public class BookService extends IntentService {
 
         @Override
         protected void onPostExecute(String result) {
-            parseJson(string, result);
+            if (result == null) {
+                Log.d(LOG_TAG, "null");
+                Toast.makeText(BookService.this, "Are you connected to the internet?", Toast.LENGTH_SHORT).show();
+            } else if (result.equals("")) {
+                Log.d(LOG_TAG, "empty string");
+                Toast.makeText(BookService.this, "Are you connected to the internet?", Toast.LENGTH_SHORT).show();
+            } else {
+                parseJson(string, result);
+            }
         }
 
         @Override
@@ -231,7 +246,6 @@ public class BookService extends IntentService {
             Log.e(LOG_TAG, "Error ", e);
         }
     }
-
 
     private void writeBackBook(String ean, String title, String subtitle, String desc, String imgUrl) {
         ContentValues values= new ContentValues();
