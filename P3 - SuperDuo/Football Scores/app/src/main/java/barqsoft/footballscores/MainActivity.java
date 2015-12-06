@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.facebook.stetho.Stetho;
-
 public class MainActivity extends ActionBarActivity {
 
     public static int selected_match_id;
@@ -27,13 +25,6 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, my_main)
                     .commit();
-        }
-
-        if (BuildConfig.DEBUG) {
-            Stetho.initialize(Stetho.newInitializerBuilder(this)
-                    .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                    .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                    .build());
         }
     }
 

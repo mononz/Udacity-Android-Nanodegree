@@ -54,7 +54,7 @@ public class Utilities
         }
         switch (teamname) { //This is the set of icons that are currently in the app. Feel free to find and add more
             //as you go.
-            case "Arsenal London FC" : return R.drawable.arsenal;
+            case "Arsenal FC" : return R.drawable.arsenal;
             case "Aston Villa FC" : return R.drawable.aston_villa;
             //burney
             case "Chelsea FC" : return R.drawable.chelsea;
