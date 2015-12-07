@@ -237,6 +237,9 @@ public class myFetchService extends IntentService {
         }
     }
 
+
+    // Currently widget only is updated when data updates. Really should have a dedicated sync'r to
+    // run every few hours or so to make widget properly useful.
     private void updateWidgets() {
         Context context = getApplicationContext();
         Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED).setPackage(context.getPackageName());
