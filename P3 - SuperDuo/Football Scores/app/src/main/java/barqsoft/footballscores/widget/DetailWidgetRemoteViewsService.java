@@ -3,7 +3,6 @@ package barqsoft.footballscores.widget;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.widget.AdapterView;

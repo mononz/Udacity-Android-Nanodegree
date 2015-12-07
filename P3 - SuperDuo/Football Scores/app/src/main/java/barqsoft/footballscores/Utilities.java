@@ -3,8 +3,8 @@ package barqsoft.footballscores;
 /**
  * Created by yehya khaled on 3/3/2015.
  */
-public class Utilities
-{
+public class Utilities {
+
     public static final int SERIE_A = 357;
     public static final int PREMIER_LEGAUE = 354;
     public static final int CHAMPIONS_LEAGUE = 362;

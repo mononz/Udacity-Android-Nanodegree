@@ -22,6 +22,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
         String urlDisplay = urls[0];
         Bitmap bookCover = null;
         try {
+            // might not have an image, so catch if it doesn't
             InputStream in = new java.net.URL(urlDisplay).openStream();
             bookCover = BitmapFactory.decodeStream(in);
         } catch (Exception e) {

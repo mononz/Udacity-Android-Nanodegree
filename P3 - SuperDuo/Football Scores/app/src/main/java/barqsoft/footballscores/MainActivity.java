@@ -28,7 +28,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -44,19 +43,16 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_about)
-        {
+        if (id == R.id.action_about) {
             Intent start_about = new Intent(this,AboutActivity.class);
             startActivity(start_about);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
         Log.v(save_tag,"will save");
         Log.v(save_tag,"fragment: "+String.valueOf(my_main.mPagerHandler.getCurrentItem()));
         Log.v(save_tag,"selected id: "+selected_match_id);
@@ -67,8 +63,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         Log.v(save_tag,"will retrive");
         Log.v(save_tag,"fragment: "+String.valueOf(savedInstanceState.getInt("Pager_Current")));
         Log.v(save_tag,"selected id: "+savedInstanceState.getInt("Selected_match"));
@@ -77,4 +72,5 @@ public class MainActivity extends ActionBarActivity {
         my_main = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState,"my_main");
         super.onRestoreInstanceState(savedInstanceState);
     }
+
 }

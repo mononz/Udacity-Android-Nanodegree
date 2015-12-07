@@ -59,6 +59,8 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
                 bookIntent.putExtra(BookService.EAN, ean);
                 bookIntent.setAction(BookService.DELETE_BOOK);
                 getActivity().startService(bookIntent);
+                // notify the main list that a book is now gone and it should refresh itself
+                getContext().getContentResolver().notifyChange(AlexandriaContract.BookEntry.CONTENT_URI, null);
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });

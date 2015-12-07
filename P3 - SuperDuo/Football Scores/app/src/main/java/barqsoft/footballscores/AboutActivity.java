@@ -49,8 +49,7 @@ public class AboutActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
-        public PlaceholderFragment() {
-        }
+        public PlaceholderFragment() { }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
