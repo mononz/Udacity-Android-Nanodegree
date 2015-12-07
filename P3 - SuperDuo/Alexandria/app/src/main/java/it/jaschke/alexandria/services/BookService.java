@@ -92,15 +92,8 @@ public class BookService extends IntentService {
         }
 
         bookEntry.close();
-
-        if (MainActivity.isNetworkAvailable(this)) {
-            Log.d(LOG_TAG, "Proceeeed");
-            LongOperation longop = new LongOperation(ean);
-            longop.execute();
-        } else {
-            Log.d(LOG_TAG, "No net fool!");
-            Toast.makeText(this, "No net fool!", Toast.LENGTH_LONG).show();
-        }
+        LongOperation longop = new LongOperation(ean);
+        longop.execute();
     }
 
     private class LongOperation extends AsyncTask<String, Void, String> {
