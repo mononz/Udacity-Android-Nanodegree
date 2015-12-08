@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="@dimen/TeamNamesSmaller"
+                android:textSize="@dimen/teamnames_smaller"
                 android:textColor="@android:color/black"
                 android:gravity="center"
                 android:text="@string/test_text"
@@ -48,7 +48,8 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/Score"
+                android:textSize="@dimen/score"
+                android:contentDescription="@string/team_score"
                 android:id="@+id/score_textview"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -79,7 +80,7 @@
                 android:gravity="center"
                 android:textColor="@android:color/black"
                 android:text="@string/test_text"
-                android:textSize="@dimen/TeamNamesSmaller"
+                android:textSize="@dimen/teamnames_smaller"
                 android:id="@+id/away_name"/>
         </LinearLayout>
     </LinearLayout>

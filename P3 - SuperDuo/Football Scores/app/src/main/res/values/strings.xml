@@ -21,6 +21,9 @@
     <string name="share_text">Share</string>
     <string name="team_home">Home Team</string>
     <string name="team_away">Away Team</string>
+    <string name="team_league">League</string>
+    <string name="team_matchday">Match Day</string>
+    <string name="team_score">Score</string>
     <string name="about">About</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="about_text" translatable="false">

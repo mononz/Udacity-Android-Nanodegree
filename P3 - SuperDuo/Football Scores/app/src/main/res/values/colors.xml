@@ -76,14 +76,4 @@
     <color name="red13">#FFCACA</color>
     <color name="red14">#FFE4E4</color>
 
-
-
-    <color name="white">#FFFFFF</color>
-    <color name="activated">#E0E0E0</color>
-    <color name="primary">#03A9F4</color>  <!-- 500 -->
-    <color name="forecast_low_text">#607D8B</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
-    <color name="primary_light">#B3E5FC</color> <!-- 100 -->
-
 </resources>
