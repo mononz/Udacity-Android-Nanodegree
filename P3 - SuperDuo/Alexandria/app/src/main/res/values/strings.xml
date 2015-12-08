@@ -27,6 +27,7 @@
     <string name="no_barcode">Could not Grab Barcode</string>
     <string name="read_barcode">Read Barcode</string>
     <string name="barcode_activity">Missing Barcode Scanner</string>
+    <string name="invalid_isbn">Invalid ISBN-13 number. Please try again</string>
 
     <string name="ok">OK</string>
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>

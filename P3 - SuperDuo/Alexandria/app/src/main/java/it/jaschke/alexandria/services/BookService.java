@@ -46,7 +46,7 @@ public class BookService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
+        if (intent != null && intent.getAction() != null) {
             final String action = intent.getAction();
             if (FETCH_BOOK.equals(action)) {
                 final String ean = intent.getStringExtra(EAN);
@@ -73,11 +73,9 @@ public class BookService extends IntentService {
      * parameters.
      */
     private void fetchBook(String ean) {
-
         if (ean.length()!=13){
             return;
         }
-
         Cursor bookEntry = getContentResolver().query(
                 AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)),
                 null, // leaving "columns" null just returns all the columns.
@@ -86,12 +84,13 @@ public class BookService extends IntentService {
                 null  // sort order
         );
 
-        if (bookEntry.getCount()>0){
+        if (bookEntry != null) {
             bookEntry.close();
-            return;
+            if (bookEntry.getCount()>0) {
+                return;
+            }
         }
 
-        bookEntry.close();
         LongOperation longop = new LongOperation(ean);
         longop.execute();
     }

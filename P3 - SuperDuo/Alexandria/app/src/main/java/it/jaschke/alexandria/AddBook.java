@@ -50,7 +50,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(ean!=null) {
+        if(ean != null) {
             outState.putString(EAN_CONTENT, ean.getText().toString());
         }
     }
@@ -74,7 +74,11 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
             @Override
             public void afterTextChanged(Editable s) {
-                String ean =s.toString();
+                if (s == null) {
+                    return;
+                }
+
+                String ean = s.toString();
                 //catch isbn10 numbers
                 if(ean.length()==10 && !ean.startsWith("978")){
                     ean="978"+ean;
@@ -129,9 +133,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             }
         });
 
-        if(savedInstanceState!=null){
-            ean.setText(savedInstanceState.getString(EAN_CONTENT));
-            ean.setHint("");
+        if (savedInstanceState != null){
+            //ean.setText(savedInstanceState.getString(EAN_CONTENT));
+            //ean.setHint("");
         }
 
         return rootView;
@@ -165,18 +169,11 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         if(ean.getText().length()==0){
             return null;
         }
-        String eanStr= ean.getText().toString();
+        String eanStr = ean.getText().toString();
         if(eanStr.length()==10 && !eanStr.startsWith("978")){
             eanStr="978"+eanStr;
         }
-        return new CursorLoader(
-                getActivity(),
-                AlexandriaContract.BookEntry.buildFullBookUri(Long.parseLong(eanStr)),
-                null,
-                null,
-                null,
-                null
-        );
+        return new CursorLoader(getActivity(), AlexandriaContract.BookEntry.buildFullBookUri(Long.parseLong(eanStr)), null, null, null, null);
     }
 
     @Override

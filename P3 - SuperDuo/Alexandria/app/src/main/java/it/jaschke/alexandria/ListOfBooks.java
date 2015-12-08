@@ -18,7 +18,6 @@ import it.jaschke.alexandria.api.BookListAdapter;
 import it.jaschke.alexandria.api.Callback;
 import it.jaschke.alexandria.data.AlexandriaContract;
 
-
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private BookListAdapter bookListAdapter;
@@ -86,28 +85,14 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         final String selection = AlexandriaContract.BookEntry.TITLE +" LIKE ? OR " + AlexandriaContract.BookEntry.SUBTITLE + " LIKE ? ";
-        String searchString =searchText.getText().toString();
+        String searchString = searchText.getText().toString();
 
-        if(searchString.length()>0){
-            searchString = "%"+searchString+"%";
-            return new CursorLoader(
-                    getActivity(),
-                    AlexandriaContract.BookEntry.CONTENT_URI,
-                    null,
-                    selection,
-                    new String[]{searchString,searchString},
-                    null
-            );
+        if(searchString.length() > 0) {
+            searchString = "%" + searchString + "%";
+            return new CursorLoader(getActivity(), AlexandriaContract.BookEntry.CONTENT_URI, null, selection, new String[]{searchString,searchString}, null);
         }
 
-        return new CursorLoader(
-                getActivity(),
-                AlexandriaContract.BookEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
+        return new CursorLoader(getActivity(), AlexandriaContract.BookEntry.CONTENT_URI, null, null, null, null);
     }
 
     @Override
