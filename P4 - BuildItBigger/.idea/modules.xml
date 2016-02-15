@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/P4 - BuildItBigger.iml" filepath="$PROJECT_DIR$/P4 - BuildItBigger.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/joker/joker.iml" filepath="$PROJECT_DIR$/joker/joker.iml" />
       <module fileurl="file://$PROJECT_DIR$/jokerlib/jokerlib.iml" filepath="$PROJECT_DIR$/jokerlib/jokerlib.iml" />
     </modules>
