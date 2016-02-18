@@ -25,9 +25,11 @@ public class MainActivityFragment extends Fragment {
 
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("92F64085265F89AD88C43A7E749B8E5F")
                 .build();
         mAdView.loadAd(adRequest);
 
         return root;
     }
+
 }

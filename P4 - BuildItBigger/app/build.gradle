@@ -15,14 +15,23 @@ android {
     }
 
     dexOptions {
-        javaMaxHeapSize "4g"    //specify the heap size for the dex process
-        preDexLibraries = false //delete the already predexed libraries
+        javaMaxHeapSize "4g"   // specify the heap size for the dex process
+        preDexLibraries false  // delete the already predexed libraries
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        free {
+            applicationId "net.mononz.builditbigger.free"
+        }
+        paid {
+            applicationId "net.mononz.builditbigger.paid"
         }
     }
 }
@@ -33,6 +42,6 @@ dependencies {
     compile project(":joker")
     compile project(":jokerlib")
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    freeCompile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
 }
