@@ -63,7 +63,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':joker')
-    compile project(':jokerlib')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     freeCompile 'com.google.android.gms:play-services-ads:8.4.0'

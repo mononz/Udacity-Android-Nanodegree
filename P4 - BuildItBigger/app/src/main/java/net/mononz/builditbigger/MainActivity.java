@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import net.mononz.joker.JokeActivity;
-import net.mononz.joker.lib.JokeSource;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,11 +16,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        Intent intent = new Intent(this, JokeActivity.class);
-        JokeSource jokeSource = new JokeSource();
-        String joke = jokeSource.getJoke();
-        intent.putExtra(JokeActivity.JOKE_KEY, joke);
-        startActivity(intent);
+        new JokeGrabber(new JokeListener() {
+            @Override
+            public void onComplete(String joke) {
+                Intent intent = new Intent(MainActivity.this, JokeActivity.class);
+                intent.putExtra(JokeActivity.JOKE_KEY, joke);
+                startActivity(intent);
+            }
+        }).grabTastyJoke();
+
     }
 
 }
