@@ -6,7 +6,7 @@ public class JokeSource {
 
     public static String getJoke() {
         String[] crazyJokes = christmasCrackerJokes;
-        int randomIndex = randInt(0, crazyJokes.length);
+        int randomIndex = randInt(0, crazyJokes.length-1);
         return crazyJokes[randomIndex];
     }
 
