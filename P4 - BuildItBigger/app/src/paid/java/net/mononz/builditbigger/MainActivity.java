@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import net.mononz.joker.Helper;
 import net.mononz.joker.JokeActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
+        Helper helper = new Helper();
+        if (!helper.isConnected(this)) {
+            Toast.makeText(this, "Are you connected to the internet?", Toast.LENGTH_SHORT).show();
+            return;
+        }
         spinner.setVisibility(View.VISIBLE);
         new JokeGrabber(new JokeListener() {
             @Override
