@@ -31,5 +31,4 @@ public class JokeGrabberTest extends AndroidTestCase implements JokeListener {
         signal.countDown();
     }
 
-
 }
