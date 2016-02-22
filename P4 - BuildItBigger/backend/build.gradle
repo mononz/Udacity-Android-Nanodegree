@@ -19,9 +19,9 @@ apply plugin: 'war'
 apply plugin: 'appengine'
 
 dependencies {
-  appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
-  compile 'com.google.appengine:appengine-endpoints:1.9.18'
-  compile 'com.google.appengine:appengine-endpoints-deps:1.9.18'
+  appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.32'
+  compile 'com.google.appengine:appengine-endpoints:1.9.32'
+  compile 'com.google.appengine:appengine-endpoints-deps:1.9.32'
   compile 'javax.servlet:servlet-api:2.5'
   compile project(':jokerlib')
 }

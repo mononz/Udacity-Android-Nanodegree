@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 public class Helper {
 
+    // Check for internet connection
     public boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

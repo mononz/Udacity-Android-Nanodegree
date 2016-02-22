@@ -20,6 +20,7 @@ public class JokeActivityFragment extends Fragment {
         String joke = intent.getStringExtra(JokeActivity.JOKE_KEY);
         TextView jokeTextView = (TextView) root.findViewById(R.id.joke_textview);
         if (joke != null && joke.length() != 0) {
+            // if joke is received, display joke
             jokeTextView.setText(joke);
         }
 
