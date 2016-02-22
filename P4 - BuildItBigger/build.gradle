@@ -1,0 +1,80 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+
+// BuildItBigger Optional Components tasks
+
+task startGCE {
+    group = 'submission'
+    dependsOn ':backend:appengineRun'
+    doLast {
+        println("LOG: Started temporary GCE server!")
+    }
+}
+task gceTest {
+    group = 'submission'
+    dependsOn ':backend:test'
+    doLast {
+        println("LOG: Running GCE Tests")
+    }
+}
+task appTest {
+    group = 'submission'
+    dependsOn ':app:connectedAndroidTest'
+    doLast {
+        println("LOG: Running App Connected Tests")
+    }
+}
+task stopGCE {
+    group = 'submission'
+    dependsOn ':backend:appengineStop'
+    doLast {
+        println("LOG: Stopped temporary GCE server!")
+    }
+}
+
+// GCE server must be started before GCE tests can be run
+gceTest.mustRunAfter startGCE
+// GCE tests need to finish before we stop the server
+stopGCE.mustRunAfter gceTest
+// App Connected tests can run whenever
+
+task buildItBiggerTasks {
+
+    group = 'submission'
+    description = 'Run GCE temp server, GCE tests, App connected tests, Shutdown server'
+
+    evaluationDependsOn ":backend"
+
+    project(":backend"){
+        appengine{
+            daemon true
+        }
+    }
+
+    dependsOn stopGCE
+    // I put stopGCE above because tests will fail if no device connected.
+    // On repeat test, GCE server is still running and tests will fail.
+    // I wanted to make sure to stop GCE server first if it is running.
+    dependsOn startGCE
+    dependsOn gceTest
+    dependsOn appTest
+    dependsOn stopGCE
+}

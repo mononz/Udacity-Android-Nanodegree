@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    signingConfigs {
+        debug {
+            keyAlias 'debug'
+            keyPassword 'z93VnQpCOr6q'
+            storeFile file('../../.debug.jks')
+            storePassword 'z93VnQpCOr6q'
+        }
+        freeRelease {
+            keyAlias 'nano_p4'
+            keyPassword '8IoFElzYkyIy'
+            storeFile file('../.nano_p4_free.jks')
+            storePassword 'D4FPoBlF0jV3'
+        }
+        paidRelease {
+            keyAlias 'nano_p4_paid'
+            keyPassword 'W8yjNvBxwhwW'
+            storeFile file('../.nano_p4_paid.jks')
+            storePassword '5Im8aLVYMZSf'
+        }
+    }
+
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+
+    defaultConfig {
+        applicationId "net.mononz.builditbigger"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"   // specify the heap size for the dex process
+        preDexLibraries false  // delete the already predexed libraries
+    }
+
+    productFlavors {
+        free {
+            applicationId "net.mononz.builditbigger.free"
+        }
+        paid {
+            applicationId "net.mononz.builditbigger.paid"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            productFlavors.free.signingConfig signingConfigs.freeRelease
+            productFlavors.paid.signingConfig signingConfigs.paidRelease
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':joker')
+    compile project(path: ':backend', configuration: 'android-endpoints')
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    freeCompile 'com.google.android.gms:play-services-ads:8.4.0'
+}
