@@ -1,7 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.xyzreader"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="net.mononz.xyzreader">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,7 +13,7 @@
         android:theme="@style/Theme.Bacon">
 
         <activity
-            android:name=".ui.ArticleListActivity"
+            android:name="net.mononz.xyzreader.ui.ArticleListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,23 +22,23 @@
         </activity>
 
         <activity
-            android:name=".ui.ArticleDetailActivity"
-            android:parentActivityName=".ui.ArticleListActivity">
+            android:name="net.mononz.xyzreader.ui.ArticleDetailActivity"
+            android:parentActivityName="net.mononz.xyzreader.ui.ArticleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="vnd.android.cursor.item/vnd.com.example.xyzreader.items" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.net.mononz.xyzreader.items" />
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.ArticleListActivity" />
+                android:value="net.mononz.xyzreader.ui.ArticleListActivity" />
         </activity>
 
-        <service android:name=".data.UpdaterService"
+        <service android:name="net.mononz.xyzreader.data.UpdaterService"
             android:exported="false" />
 
-        <provider android:name=".data.ItemsProvider"
-            android:authorities="com.example.xyzreader"
+        <provider android:name="net.mononz.xyzreader.data.ItemsProvider"
+            android:authorities="net.mononz.xyzreader"
             android:exported="false" />
 
     </application>

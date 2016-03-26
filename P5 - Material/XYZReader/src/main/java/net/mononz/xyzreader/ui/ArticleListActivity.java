@@ -1,4 +1,4 @@
-package com.example.xyzreader.ui;
+package net.mononz.xyzreader.ui;
 
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
@@ -14,16 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
-import android.util.TypedValue;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.xyzreader.R;
-import com.example.xyzreader.data.ArticleLoader;
-import com.example.xyzreader.data.ItemsContract;
-import com.example.xyzreader.data.UpdaterService;
+import net.mononz.xyzreader.R;
+import net.mononz.xyzreader.data.ArticleLoader;
+import net.mononz.xyzreader.data.ItemsContract;
+import net.mononz.xyzreader.data.UpdaterService;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -158,7 +156,7 @@ public class ArticleListActivity extends ActionBarActivity implements
 
         @Override
         public int getItemCount() {
-            return mCursor.getCount();
+            return (mCursor == null) ? 0 : mCursor.getCount();
         }
     }
 

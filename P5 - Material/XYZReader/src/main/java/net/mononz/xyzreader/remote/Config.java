@@ -1,4 +1,4 @@
-package com.example.xyzreader.remote;
+package net.mononz.xyzreader.remote;
 
 import java.net.MalformedURLException;
 import java.net.URL;
