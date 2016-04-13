@@ -9,6 +9,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 public class ImageLoaderHelper {
+
     private static ImageLoaderHelper sInstance;
 
     public static ImageLoaderHelper getInstance(Context context) {

@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:maxWidth="@dimen/detail_card_max_width">
+                android:background="@color/background">
 
                 <LinearLayout
                     android:id="@+id/meta_bar"
@@ -86,7 +86,7 @@
                     android:layout_marginRight="@dimen/detail_inner_horiz_margin"
                     android:layout_marginBottom="16dp"
                     app:cardCornerRadius="4dp"
-                    app:contentPadding="8dp" >
+                    app:contentPadding="16dp" >
 
                     <TextView
                         android:id="@+id/article_body"

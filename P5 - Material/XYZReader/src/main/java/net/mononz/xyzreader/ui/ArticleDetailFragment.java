@@ -5,11 +5,13 @@ import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -17,7 +19,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 
 import net.mononz.xyzreader.R;
 import net.mononz.xyzreader.data.ArticleLoader;
@@ -37,6 +43,7 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
+    private LinearLayout meta_bar;
     private int mMutedColor = 0xFF333333;
     private NestedScrollView mScrollView;
     private ColorDrawable mStatusBarColorDrawable;
@@ -93,6 +100,7 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
+        meta_bar = (LinearLayout) mRootView.findViewById(R.id.meta_bar);
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -125,8 +133,7 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
     }
 
     private void updateStatusBar() {
-        int color = 0;
-        mStatusBarColorDrawable.setColor(color);
+        mStatusBarColorDrawable.setColor(mMutedColor);
     }
 
     private void bindViews() {
@@ -134,10 +141,10 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
             return;
         }
 
-        TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
-        TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
+        final TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
+        final TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
-        TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
+        final TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
         bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
@@ -155,22 +162,27 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
                             + "</font>"));
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
 
-            mPhotoView.setImageUrl(mCursor.getString(ArticleLoader.Query.THUMB_URL),
-                    ImageLoaderHelper.getInstance(getActivity()).getImageLoader());
+            mPhotoView.setImageUrl(mCursor.getString(ArticleLoader.Query.THUMB_URL), ImageLoaderHelper.getInstance(getActivity()).getImageLoader());
             mPhotoView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-
-
-            /*ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
+            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
-                                Palette p = Palette.generate(bitmap, 12);
-                                mMutedColor = p.getDarkMutedColor(0xFF333333);
-                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                                mRootView.findViewById(R.id.meta_bar).setBackgroundColor(mMutedColor);
-                                updateStatusBar();
+                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                    public void onGenerated(Palette p) {
+                                        Palette.Swatch swatch = p.getVibrantSwatch();
+                                        if (swatch != null) {
+                                            mMutedColor = swatch.getRgb();
+                                            meta_bar.setBackgroundColor(mMutedColor);
+                                            titleView.setTextColor(swatch.getBodyTextColor());
+                                            bylineView.setTextColor(swatch.getTitleTextColor());
+                                        }
+
+                                        updateStatusBar();
+                                    }
+                                });
                             }
                         }
 
@@ -178,7 +190,8 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
                         public void onErrorResponse(VolleyError volleyError) {
 
                         }
-                    });*/
+                    });
+
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
