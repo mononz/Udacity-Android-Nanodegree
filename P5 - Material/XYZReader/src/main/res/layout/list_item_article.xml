@@ -1,7 +1,8 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:layout_marginTop="4dp"
@@ -10,41 +11,49 @@
     android:focusable="true"
     android:foreground="?selectableItemBackground">
 
-    <!--suppress AndroidLintContentDescription -->
-    <net.mononz.xyzreader.ui.DynamicHeightNetworkImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/photo_placeholder" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom"
-        android:padding="8dp"
-        android:background="@drawable/photo_background_scrim">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/article_title"
-            style="@style/TextAppearance.AppCompat.Subhead"
+        <net.mononz.xyzreader.ui.DynamicHeightNetworkImageView
+            android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/ltgray"
-            android:ellipsize="end"
-            android:maxLines="2"
-            tools:text="hello" />
+            android:minHeight="50dp"
+            android:background="@color/photo_placeholder" />
 
-        <TextView
-            android:id="@+id/article_subtitle"
-            style="@style/TextAppearance.AppCompat.Body1"
+        <LinearLayout
+            android:id="@+id/article_footer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/mdgray"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:ellipsize="end"
-            tools:text="hello" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:padding="8dp"
+            android:background="@color/theme_primary">
+
+            <TextView
+                android:id="@+id/article_title"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:ellipsize="end"
+                android:maxLines="2"
+                tools:text="hello" />
+
+            <TextView
+                android:id="@+id/article_subtitle"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ltgray"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"
+                tools:text="hello" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
