@@ -26,6 +26,8 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
+    private boolean mIsRefreshing = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +62,7 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(mRefreshingReceiver,
-                new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
+        registerReceiver(mRefreshingReceiver, new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
     }
 
     @Override
@@ -69,8 +70,6 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
         super.onStop();
         unregisterReceiver(mRefreshingReceiver);
     }
-
-    private boolean mIsRefreshing = false;
 
     private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
         @Override
@@ -96,7 +95,8 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
         Adapter adapter = new Adapter(this, cursor, new Adapter.Callback() {
             @Override
             public void onItemClick(long id) {
-                startActivity(new Intent(Intent.ACTION_VIEW, ItemsContract.Items.buildItemUri(id)));
+                Intent intent = new Intent(Intent.ACTION_VIEW, ItemsContract.Items.buildItemUri(id));
+                startActivity(intent);
             }
         });
         adapter.setHasStableIds(true);

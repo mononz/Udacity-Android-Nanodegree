@@ -40,14 +40,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_article, parent, false);
-        final ViewHolder vh = new ViewHolder(itemView);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCallback.onItemClick(getItemId(vh.getAdapterPosition()));
-            }
-        });
-        return vh;
+        return new ViewHolder(itemView);
     }
 
     @Override
@@ -69,14 +62,11 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         if (bitmap != null) {
                             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                 public void onGenerated(Palette p) {
-                                    Palette.Swatch swatch = p.getVibrantSwatch();
+                                    Palette.Swatch swatch = p.getMutedSwatch();
                                     if (swatch != null) {
-                                        Log.d("swatch", "" + swatch.getRgb());
                                         holder.article_footer.setBackgroundColor(swatch.getRgb());
                                         holder.titleView.setTextColor(swatch.getBodyTextColor());
                                         holder.subtitleView.setTextColor(swatch.getTitleTextColor());
-                                    } else {
-                                        Log.d("swatch", "null");
                                     }
                                 }
                             });
@@ -88,6 +78,13 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
                     }
                 });
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.onItemClick(getItemId(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
@@ -97,6 +94,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public final class ViewHolder extends RecyclerView.ViewHolder {
 
+        public View mView;
         public LinearLayout article_footer;
         public DynamicHeightNetworkImageView thumbnailView;
         public TextView titleView;
@@ -104,7 +102,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         public ViewHolder(View view) {
             super(view);
-
+            mView = view;
             article_footer = (LinearLayout) view.findViewById(R.id.article_footer);
             thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);

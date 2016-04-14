@@ -145,7 +145,7 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
         final TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         final TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+        //bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -172,9 +172,10 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
                             if (bitmap != null) {
                                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                     public void onGenerated(Palette p) {
-                                        Palette.Swatch swatch = p.getVibrantSwatch();
+                                        Palette.Swatch swatch = p.getMutedSwatch();
                                         if (swatch != null) {
                                             mMutedColor = swatch.getRgb();
+                                            Log.d("Swatch Detail", "" + mMutedColor);
                                             meta_bar.setBackgroundColor(mMutedColor);
                                             titleView.setTextColor(swatch.getBodyTextColor());
                                             bylineView.setTextColor(swatch.getTitleTextColor());
