@@ -26,6 +26,7 @@ public class UpdaterService extends IntentService {
 
     public static final String BROADCAST_ACTION_STATE_CHANGE = "net.mononz.xyzreader.intent.action.STATE_CHANGE";
     public static final String EXTRA_REFRESHING = "net.mononz.xyzreader.intent.extra.REFRESHING";
+    public static final String EXTRA_INTERNET = "net.mononz.xyzreader.intent.extra.NO_INTERNET";
 
     public UpdaterService() {
         super(TAG);
@@ -39,6 +40,7 @@ public class UpdaterService extends IntentService {
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni == null || !ni.isConnected()) {
             Log.w(TAG, "Not online, not refreshing.");
+            sendStickyBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_INTERNET, true));
             return;
         }
 
