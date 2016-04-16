@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     private RecyclerView mRecyclerView;
 
     private boolean mIsRefreshing = false;
+    private AdapterArticleList mAdapterHeroes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,28 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        mAdapterHeroes = new AdapterArticleList(this, null, new AdapterArticleList.Callback() {
+            @Override
+            public void onItemClick(long id) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, ItemsContract.Items.buildItemUri(id));
+                startActivity(intent);
+            }
+        });
+        mAdapterHeroes.setHasStableIds(true);
+
+        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.list_column_count), StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(sglm);
+        mRecyclerView.setAdapter(mAdapterHeroes);
+
         getLoaderManager().initLoader(0, null, this);
 
         if (savedInstanceState == null) {
             refresh();
         }
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(ArticleListActivity.this, R.color.theme_accent));
     }
 
     @Override
@@ -60,14 +79,14 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         registerReceiver(mRefreshingReceiver, new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         unregisterReceiver(mRefreshingReceiver);
     }
 
@@ -91,24 +110,13 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Adapter adapter = new Adapter(this, cursor, new Adapter.Callback() {
-            @Override
-            public void onItemClick(long id) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, ItemsContract.Items.buildItemUri(id));
-                startActivity(intent);
-            }
-        });
-        adapter.setHasStableIds(true);
-        mRecyclerView.setAdapter(adapter);
-        int columnCount = getResources().getInteger(R.integer.list_column_count);
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(sglm);
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor data) {
+        mAdapterHeroes.changeCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mRecyclerView.setAdapter(null);
+        mAdapterHeroes.swapCursor(null);
     }
 
 }

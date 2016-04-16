@@ -18,25 +18,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/photo_container"
+            <net.mononz.xyzreader.ui.DynamicHeightNetworkImageView
+                android:id="@+id/photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/photo_placeholder">
-
-                <net.mononz.xyzreader.ui.DynamicHeightNetworkImageView
-                    android:id="@+id/photo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="50dp"
-                    android:background="@color/photo_placeholder" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="112dp"
-                    android:background="@drawable/photo_background_protection" />
-
-            </FrameLayout>
+                android:minHeight="50dp"
+                android:background="@color/photo_placeholder" />
 
             <LinearLayout
                 android:orientation="vertical"
