@@ -179,7 +179,7 @@
         </service>
         <service
             android:name="net.mononz.sunshine.gcm.RegistrationIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
     </application>
 
 </manifest>

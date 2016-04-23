@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#000000</color>
-    <color name="digital_text">#ffffff</color>
+
+    <color name="background_blue">#03A9F4</color>      <!-- primary -->
+    <color name="watch_text_secondary">#B3E5FC</color> <!-- primary_light -->
+
 </resources>
