@@ -3,6 +3,12 @@ Advanced Android Sample App
 
 Synchronizes weather information from OpenWeatherMap on Android Phones and Tablets. Used in the Udacity Advanced Android course.
 
+NOTE
+----
+
+app/build.gradle is .gitignore'd for api key protection. Either rename or copy app/build.gradle.template to app/build.gradle and use your open weather api key in the OPEN_WEATHER_MAP_API_KEY value field
+
+
 Pre-requisites
 --------------
 Android SDK 21 or Higher
