@@ -1,9 +1,24 @@
 apply plugin: 'com.android.application'
 
-
 android {
+
+    signingConfigs {
+        debug {
+            keyAlias 'debug'
+            keyPassword 'z93VnQpCOr6q'
+            storeFile file('../../.debug.jks')
+            storePassword 'z93VnQpCOr6q'
+        }
+        release {
+            keyAlias 'debug'
+            keyPassword 'z93VnQpCOr6q'
+            storeFile file('../../.debug.jks')
+            storePassword 'z93VnQpCOr6q'
+        }
+    }
+
     compileSdkVersion 23
-    buildToolsVersion "24.0.0 rc3"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "net.mononz.sunshine"
@@ -14,8 +29,10 @@ android {
     }
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
