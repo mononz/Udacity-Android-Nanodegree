@@ -50,6 +50,7 @@ import java.util.concurrent.TimeUnit;
 public class MyWatchFace extends CanvasWatchFaceService {
 
     private static final Typeface NORMAL_TYPEFACE = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
+    private static final Typeface BOLD_TYPEFACE = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
 
     /**
      * Update rate in milliseconds for interactive mode. We update once a second since seconds are
@@ -95,6 +96,8 @@ public class MyWatchFace extends CanvasWatchFaceService {
         Paint mTextTimePaint;
         Paint mTextDatePaint;
         Paint mTextDatePaintAmbient;
+        Paint mTextTempHighPaint;
+        Paint mTextTempLowPaint;
         boolean mAmbient;
 
         Calendar mTime;
@@ -113,6 +116,12 @@ public class MyWatchFace extends CanvasWatchFaceService {
 
         float mYOffsetTime;
         float mYOffsetDate;
+        float mDividerYOffset;
+        float mWeatherYOffset;
+
+        String mTempHigh = "36" + (char) 0x00B0;
+        String mTempLow = "22" + (char) 0x00B0;
+
 
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
@@ -133,6 +142,8 @@ public class MyWatchFace extends CanvasWatchFaceService {
             Resources resources = MyWatchFace.this.getResources();
             mYOffsetTime = resources.getDimension(R.dimen.offset_y_time);
             mYOffsetDate = resources.getDimension(R.dimen.offset_y_date);
+            mDividerYOffset = resources.getDimension(R.dimen.offset_y_divider);
+            mWeatherYOffset = resources.getDimension(R.dimen.offset_y_temperatures);
 
             mBackgroundPaint = new Paint();
             mBackgroundPaint.setColor(ContextCompat.getColor(MyWatchFace.this, R.color.background_blue));
@@ -145,6 +156,13 @@ public class MyWatchFace extends CanvasWatchFaceService {
 
             mTextDatePaintAmbient = new Paint();
             mTextDatePaintAmbient = createTextPaint(Color.WHITE);
+
+            mTextTempHighPaint = new Paint();
+            mTextTempHighPaint = createTextPaint(Color.WHITE);
+            mTextTempHighPaint.setTypeface(BOLD_TYPEFACE);
+
+            mTextTempLowPaint = new Paint();
+            mTextTempLowPaint = createTextPaint(Color.WHITE);
 
             mTime = Calendar.getInstance();
         }
@@ -211,10 +229,14 @@ public class MyWatchFace extends CanvasWatchFaceService {
             mXOffsetTimeAmbient = resources.getDimension(isRound ? R.dimen.offset_x_time_round_ambient : R.dimen.offset_x_time_ambient);
             float timeTextSize = resources.getDimension(isRound ? R.dimen.text_size_time_round : R.dimen.text_size_time);
             float dateTextSize = resources.getDimension(isRound ? R.dimen.text_size_date_round : R.dimen.text_size_date);
+            float tempHighTextSize = resources.getDimension(isRound ? R.dimen.text_size_temp_round : R.dimen.text_size_temp);
+            float tempLowTextSize = resources.getDimension(isRound ? R.dimen.text_size_temp_round : R.dimen.text_size_temp);
 
             mTextTimePaint.setTextSize(timeTextSize);
             mTextDatePaint.setTextSize(dateTextSize);
             mTextDatePaintAmbient.setTextSize(dateTextSize);
+            mTextTempHighPaint.setTextSize(tempHighTextSize);
+            mTextTempLowPaint.setTextSize(tempLowTextSize);
         }
 
         @Override
@@ -238,6 +260,8 @@ public class MyWatchFace extends CanvasWatchFaceService {
                     mTextTimePaint.setAntiAlias(!inAmbientMode);
                     mTextDatePaint.setAntiAlias(!inAmbientMode);
                     mTextDatePaintAmbient.setAntiAlias(!inAmbientMode);
+                    mTextTempHighPaint.setAntiAlias(!inAmbientMode);
+                    mTextTempLowPaint.setAntiAlias(!inAmbientMode);
                 }
                 invalidate();
             }
@@ -249,31 +273,50 @@ public class MyWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
-            // Draw the background.
+
+            // Section : Background. Off in Ambient, Blue in interactive
             if (isInAmbientMode()) {
                 canvas.drawColor(Color.BLACK);
             } else {
                 canvas.drawRect(0, 0, bounds.width(), bounds.height(), mBackgroundPaint);
             }
 
-            // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
             mTime.setTimeInMillis(System.currentTimeMillis());
-
             SimpleDateFormat formatTimeLong = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
             SimpleDateFormat formatTimeShort = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            String textTime = mAmbient ? formatTimeShort.format(mTime.getTime()) : formatTimeLong.format(mTime.getTime());
+            SimpleDateFormat formatDate = new SimpleDateFormat("EEE, MMM dd yyyy", Locale.getDefault());
 
+            // Section : Time. In ambient, only display hours and minutes due to minute based update frequency
+            String textTime = mAmbient ? formatTimeShort.format(mTime.getTime()) : formatTimeLong.format(mTime.getTime());
             float xOffsetTime = mTextTimePaint.measureText(textTime) / 2;
             canvas.drawText(textTime, bounds.centerX() - xOffsetTime, mYOffsetTime, mTextTimePaint);
 
-            SimpleDateFormat formatDate = new SimpleDateFormat("EEE, MMM dd yyyy", Locale.getDefault());
-
+            // Section : Date
             String dateText = formatDate.format(mTime.getTime());
-
-            //dateText = String.format("%s, %s %02d %d", "Mon", "Mar", 03, 2016);
             float xOffsetDate = mTextDatePaint.measureText(dateText) / 2;
             Paint datePaint = mAmbient ? mTextDatePaintAmbient : mTextDatePaint;
             canvas.drawText(dateText, bounds.centerX() - xOffsetDate, mYOffsetDate, datePaint);
+
+            // Section : Divider
+            canvas.drawLine(bounds.centerX() - getResources().getDimension(R.dimen.divider_half_length), mDividerYOffset, bounds.centerX() + getResources().getDimension(R.dimen.divider_half_length), mDividerYOffset, datePaint);
+
+            // Section : Image
+
+
+            // Section : Temp High
+            float highLength = 0;
+            if (mTempHigh != null) {
+                highLength = mTextTempHighPaint.measureText(mTempHigh);
+                float xOffsetTempHigh = highLength / 2;
+                canvas.drawText(mTempHigh, bounds.centerX() - xOffsetTempHigh, mWeatherYOffset, mTextTempHighPaint);
+            }
+
+            // Section : Temp Low
+            if (mTempLow != null) {
+                canvas.drawText(mTempLow, bounds.centerX() + (highLength / 2) + getResources().getDimension(R.dimen.x_padding_tiny), mWeatherYOffset, mTextTempLowPaint);
+            }
+
+
         }
 
         /**

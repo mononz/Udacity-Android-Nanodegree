@@ -3,6 +3,11 @@
 
     <dimen name="offset_y_time">85dp</dimen>
     <dimen name="offset_y_date">110dp</dimen>
+    <dimen name="offset_y_divider">130dp</dimen>
+    <dimen name="divider_half_length">25dp</dimen>
+    <dimen name="offset_y_temperatures">170dp</dimen>
+
+    <dimen name="x_padding_tiny">10dp</dimen>
 
     <dimen name="offset_x_time">80dp</dimen>
     <dimen name="offset_x_time_ambient">50dp</dimen>
@@ -15,5 +20,7 @@
     <dimen name="text_size_time_round">35dp</dimen>
     <dimen name="text_size_date">18dp</dimen>
     <dimen name="text_size_date_round">18dp</dimen>
+    <dimen name="text_size_temp">28dp</dimen>
+    <dimen name="text_size_temp_round">28dp</dimen>
 
 </resources>
