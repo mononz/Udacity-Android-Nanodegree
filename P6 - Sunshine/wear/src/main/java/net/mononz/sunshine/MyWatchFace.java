@@ -37,6 +37,9 @@ import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -93,12 +96,14 @@ public class MyWatchFace extends CanvasWatchFaceService {
         Paint mTextDatePaint;
         Paint mTextDatePaintAmbient;
         boolean mAmbient;
-        Time mTime;
+
+        Calendar mTime;
+
         final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                mTime.clear(intent.getStringExtra("time-zone"));
-                mTime.setToNow();
+                mTime.setTimeZone(TimeZone.getDefault());
+                mTime.setTimeInMillis(System.currentTimeMillis());
             }
         };
 
@@ -141,7 +146,7 @@ public class MyWatchFace extends CanvasWatchFaceService {
             mTextDatePaintAmbient = new Paint();
             mTextDatePaintAmbient = createTextPaint(Color.WHITE);
 
-            mTime = new Time();
+            mTime = Calendar.getInstance();
         }
 
         @Override
@@ -166,8 +171,8 @@ public class MyWatchFace extends CanvasWatchFaceService {
                 registerReceiver();
 
                 // Update time zone in case it changed while we weren't visible.
-                mTime.clear(TimeZone.getDefault().getID());
-                mTime.setToNow();
+                mTime.setTimeZone(TimeZone.getDefault());
+                mTime.setTimeInMillis(System.currentTimeMillis());
             } else {
                 unregisterReceiver();
             }
@@ -252,15 +257,20 @@ public class MyWatchFace extends CanvasWatchFaceService {
             }
 
             // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
-            mTime.setToNow();
-            String textTime = mAmbient
-                    ? String.format("%02d:%02d", mTime.hour, mTime.minute)
-                    : String.format("%02d:%02d:%02d", mTime.hour, mTime.minute, mTime.second);
+            mTime.setTimeInMillis(System.currentTimeMillis());
+
+            SimpleDateFormat formatTimeLong = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat formatTimeShort = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String textTime = mAmbient ? formatTimeShort.format(mTime.getTime()) : formatTimeLong.format(mTime.getTime());
 
             float xOffsetTime = mTextTimePaint.measureText(textTime) / 2;
             canvas.drawText(textTime, bounds.centerX() - xOffsetTime, mYOffsetTime, mTextTimePaint);
 
-            String dateText = String.format("%s, %s %02d %d", "Mon", "Mar", 03, 2016);
+            SimpleDateFormat formatDate = new SimpleDateFormat("EEE, MMM dd yyyy", Locale.getDefault());
+
+            String dateText = formatDate.format(mTime.getTime());
+
+            //dateText = String.format("%s, %s %02d %d", "Mon", "Mar", 03, 2016);
             float xOffsetDate = mTextDatePaint.measureText(dateText) / 2;
             Paint datePaint = mAmbient ? mTextDatePaintAmbient : mTextDatePaint;
             canvas.drawText(dateText, bounds.centerX() - xOffsetDate, mYOffsetDate, datePaint);
