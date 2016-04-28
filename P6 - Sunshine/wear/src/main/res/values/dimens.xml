@@ -20,7 +20,7 @@
     <dimen name="text_size_time_round">35dp</dimen>
     <dimen name="text_size_date">18dp</dimen>
     <dimen name="text_size_date_round">18dp</dimen>
-    <dimen name="text_size_temp">28dp</dimen>
-    <dimen name="text_size_temp_round">28dp</dimen>
+    <dimen name="text_size_temp">26dp</dimen>
+    <dimen name="text_size_temp_round">26dp</dimen>
 
 </resources>
